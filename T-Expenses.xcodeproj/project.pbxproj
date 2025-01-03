@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		A5A31B7E2D259CEE005BDAF7 /* CurrencyField in Frameworks */ = {isa = PBXBuildFile; productRef = A5A31B7D2D259CEE005BDAF7 /* CurrencyField */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		A50179AE2D255B8700285614 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -65,6 +69,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A5A31B7E2D259CEE005BDAF7 /* CurrencyField in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -91,6 +96,7 @@
 				A501799B2D255B8600285614 /* T-Expenses */,
 				A50179B02D255B8700285614 /* T-ExpensesTests */,
 				A50179BA2D255B8700285614 /* T-ExpensesUITests */,
+				A5A31B7C2D259CEE005BDAF7 /* Frameworks */,
 				A501799A2D255B8600285614 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -103,6 +109,13 @@
 				A50179B72D255B8700285614 /* T-ExpensesUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		A5A31B7C2D259CEE005BDAF7 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -125,6 +138,7 @@
 			);
 			name = "T-Expenses";
 			packageProductDependencies = (
+				A5A31B7D2D259CEE005BDAF7 /* CurrencyField */,
 			);
 			productName = "T-Expenses";
 			productReference = A50179992D255B8600285614 /* T-Expenses.app */;
@@ -208,6 +222,9 @@
 			);
 			mainGroup = A50179902D255B8600285614;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				A50179E92D259C2000285614 /* XCRemoteSwiftPackageReference "swiftui-currency-field" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = A501799A2D255B8600285614 /* Products */;
 			projectDirPath = "";
@@ -404,6 +421,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_STRICT_CONCURRENCY = complete;
 			};
 			name = Debug;
 		};
@@ -459,6 +477,7 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_STRICT_CONCURRENCY = complete;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -575,6 +594,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		A50179E92D259C2000285614 /* XCRemoteSwiftPackageReference "swiftui-currency-field" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/jtrinc/swiftui-currency-field.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		A5A31B7D2D259CEE005BDAF7 /* CurrencyField */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A50179E92D259C2000285614 /* XCRemoteSwiftPackageReference "swiftui-currency-field" */;
+			productName = CurrencyField;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = A50179912D255B8600285614 /* Project object */;
 }
