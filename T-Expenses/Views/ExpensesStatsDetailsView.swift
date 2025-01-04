@@ -17,7 +17,7 @@ struct TaggedExpense: Identifiable {
     let amount: Decimal
 }
 
-struct ExpensesStatsDetails: View {
+struct ExpensesStatsDetailsView: View {
     @Query private var items: [Item]
     
     private let startDate: Date
@@ -65,5 +65,5 @@ struct ExpensesStatsDetails: View {
 }
 
 #Preview {
-    ExpensesStatsDetails(month: 1, year: 2024)
+    ExpensesStatsDetailsView(month: 1, year: 2024)
 }
