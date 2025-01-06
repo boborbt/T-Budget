@@ -16,5 +16,15 @@ struct ExpShortCutProvider: AppShortcutsProvider {
                     shortTitle: "Add Expense",
                     systemImageName: "eurosign.bank.building"
         )
+        AppShortcut(intent: AddExpenseIntent(),
+                    phrases: [ "Add an expense", "Record expense" ],
+                    shortTitle: "Add Expense",
+                    systemImageName: "plus"
+        )
+        AppShortcut(intent: ExportExpenses(),
+                    phrases: ["Export my expenses"],
+                    shortTitle: "Export",
+                    systemImageName: "square.and.arrow.down"
+        )
     }
 }

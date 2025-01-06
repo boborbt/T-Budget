@@ -42,6 +42,13 @@ struct ItemListView: View {
                     }
                 }
                 .onDelete(perform: deleteItems)
+                .onChange(of: items) {
+                    if let itemId = ActionManager.editItem {
+                        self.selectedItem = self.items.first(where: { item in
+                            item.persistentModelID == itemId
+                        })
+                    }
+                }
             }
         }
     }

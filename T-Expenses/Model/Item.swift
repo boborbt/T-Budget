@@ -13,9 +13,9 @@ import SwiftData
 
 @Model
 final class Item: Sendable {
-    var timestamp: Date
-    var tag: String
-    var amount: Decimal
+    var timestamp: Date = Date()
+    var tag: String = "Other"
+    var amount: Decimal = Decimal(0.0)
     
     init(timestamp: Date, tag: String, amount: Decimal) {
         self.timestamp = timestamp

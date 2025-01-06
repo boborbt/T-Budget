@@ -30,13 +30,20 @@ struct ItemListStats: View {
     }
     
     var body: some View {
-        HStack {
-            Label("\(items.count) items", systemImage: "bolt.fill")
-            Label("\(items.reduce(Decimal(0.0)) { $0 + $1.amount }, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))", systemImage: "eurosign.bank.building")
-        }
-        .onTapGesture {
-            statsTapped = true
+        VStack {
+            HStack {
+                Label("\(items.count) items", systemImage: "bolt.fill")
+                Label("\(items.reduce(Decimal(0.0)) { $0 + $1.amount }, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))", systemImage: "eurosign.bank.building")
+            }
+            .onTapGesture {
+                statsTapped = true
+            }
         }
     }
 
+}
+
+#Preview {
+    ItemListStats(month: 1, year: 2025, statsTapped: .constant(false))
+        .modelContext(DataManager.previewContainer.mainContext)
 }

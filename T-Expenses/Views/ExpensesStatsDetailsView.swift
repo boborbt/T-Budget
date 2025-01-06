@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import Charts
 
 struct TaggedExpense: Identifiable {
     var id: String {
@@ -52,18 +53,39 @@ struct ExpensesStatsDetailsView: View {
     }
     
     var body: some View {
-        List {
-            ForEach(expenses) { exp in
-                HStack {
-                    Text(exp.tag)
-                    Spacer()
-                    Text("\(exp.amount, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))")
+        VStack {
+            Chart(expenses) { exp in
+                SectorMark( angle: .value(
+                    exp.tag,
+                    exp.amount)
+                ).foregroundStyle(
+                    by: .value(
+                        Text(verbatim: exp.tag),
+                        exp.tag
+                    )
+                )
+            }
+            .chartLegend(position: .bottom, alignment: .center)
+            .padding(.all)
+            .overlay {
+                RoundedRectangle(cornerRadius:10).strokeBorder()
+            }
+            .padding(.all, 20.0)
+            List {
+                ForEach(expenses) { exp in
+                    HStack {
+                        Text(exp.tag)
+                        Spacer()
+                        Text("\(exp.amount, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))")
+                    }
                 }
             }
         }
+        
     }
 }
 
 #Preview {
-    ExpensesStatsDetailsView(month: 1, year: 2024)
+    ExpensesStatsDetailsView(month: 1, year: 2025)
+        .modelContext(DataManager.previewContainer.mainContext)
 }

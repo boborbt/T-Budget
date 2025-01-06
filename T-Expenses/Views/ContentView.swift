@@ -35,14 +35,14 @@ struct ContentView: View {
                 ExpensesStatsDetailsView(month: monthYear.month, year: monthYear.year)
             })
             .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
+                ToolbarItemGroup(placement: .navigationBarLeading) {
+                    Spacer()
                     Button(action: {
                         monthYear = monthYear.previousMonth
                     }, label: {
                         Image(systemName: "chevron.left")
                     })
-                }
-                ToolbarItem(placement: .navigationBarLeading) {
+                    
                     Button( action:{
                         monthYear = Date()
                     }, label: {
@@ -51,8 +51,7 @@ struct ContentView: View {
                             .foregroundColor(.accentColor)
                         
                     })
-                }
-                ToolbarItem(placement: .navigationBarLeading) {
+                    
                     Button( action: {
                         monthYear = monthYear.nextMonth
                     }, label: {
@@ -60,13 +59,11 @@ struct ContentView: View {
                     })
                 }
                 
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
-                }
-                ToolbarItem {
+                ToolbarItemGroup(placement: .navigationBarTrailing) {
                     Button(action: addItem) {
                         Label("Add Item", systemImage: "plus")
                     }
+                    Spacer()
                 }
             }
         } detail: {
@@ -118,5 +115,5 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
-        .modelContainer(for: Item.self, inMemory: true)
+        .modelContext(DataManager.previewContainer.mainContext)
 }
