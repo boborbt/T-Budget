@@ -8,24 +8,6 @@ import AppIntents
 import SwiftUICore
 import SwiftData
 
-//struct AddExpenseIntent: AppIntent {
-////    typealias PerformResult = <#type#>
-////    
-////    typealias SummaryContent = <#type#>
-//
-//    
-//    static let title: LocalizedStringResource = "Add Expense"
-//    
-//    static let openAppWhenRun: Bool = true
-//    
-//    @MainActor
-//    func perform() async throws -> some IntentResult {
-//        return .result()
-//    }
-//    
-//}
-
-
 
 struct AddExpenseIntent: AppIntent {
     static let title: LocalizedStringResource = "Add an expense"

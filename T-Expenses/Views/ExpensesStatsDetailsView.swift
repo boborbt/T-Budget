@@ -74,6 +74,7 @@ struct ExpensesStatsDetailsView: View {
             List {
                 ForEach(expenses) { exp in
                     HStack {
+                        Image(systemName: Tags.iconName(Tags(rawValue:exp.tag) ?? .Other))
                         Text(exp.tag)
                         Spacer()
                         Text("\(exp.amount, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))")

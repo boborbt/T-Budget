@@ -27,3 +27,4 @@ final class Item: Sendable {
         return items.reduce(Decimal(0)) { $0 + $1.amount }
     }
 }
+

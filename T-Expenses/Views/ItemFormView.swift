@@ -30,8 +30,11 @@ struct ItemFormView: View {
                         .frame(width:100, alignment: .leading)
                     Picker("Tag", selection: $item.tag) {
                         ForEach(Tags.allCases) { tag in
-                            Text(tag.rawValue).tag(tag.rawValue)
-                            
+                            HStack {
+                                Image(systemName: Tags.iconName(tag))
+                                    .symbolRenderingMode(.palette)
+                                Text(tag.rawValue).frame(width:100)
+                            }.tag(tag.rawValue)
                         }
                         .padding(.leading)
                         .font(font)

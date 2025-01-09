@@ -34,19 +34,32 @@ struct ItemListView: View {
     var body: some View {
         VStack {
             List(selection: $selectedItem) {
-                ForEach(items) { item in
-                    NavigationLink {
-                        ItemFormView(item: item)
-                    } label: {
-                        ItemView(item: item)
+                Section {
+                    ForEach(items) { item in
+                        NavigationLink {
+                            ItemFormView(item: item)
+                        } label: {
+                            ItemView(item: item)
+                        }
                     }
-                }
-                .onDelete(perform: deleteItems)
-                .onChange(of: items) {
-                    if let itemId = ActionManager.editItem {
-                        self.selectedItem = self.items.first(where: { item in
-                            item.persistentModelID == itemId
-                        })
+                    .onDelete(perform: deleteItems)
+                    .onChange(of: items) {
+                        if let itemId = ActionManager.editItem {
+                            self.selectedItem = self.items.first(where: { item in
+                                item.persistentModelID == itemId
+                            })
+                        }
+                    }
+                } header: {
+                    HStack {
+                        Text("Day")
+                            .frame(width: 30, alignment: .trailing)
+                        Text("Tag")
+                            .padding(.horizontal, 8)
+                        Spacer()
+                        Text("Amount")
+                            .padding(.leading, 8)
+                            .padding(.trailing, 30.0)
                     }
                 }
             }
@@ -60,4 +73,9 @@ struct ItemListView: View {
             }
         }
     }
+}
+
+#Preview {
+    ItemListView(month: 1, year: 2025, selectedItem: .constant(nil))
+        .modelContext(DataManager.previewContainer.mainContext)
 }

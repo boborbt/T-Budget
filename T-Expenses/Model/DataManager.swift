@@ -33,7 +33,7 @@ struct DataManager {
             
             container.mainContext.insert(Item(timestamp: Date(day: 4, month: 1, year: 2025), tag: "Car", amount: Decimal(200)))
             container.mainContext.insert(Item(timestamp: Date(day: 4, month: 1, year: 2025), tag: "Home", amount: Decimal(50)))
-            container.mainContext.insert(Item(timestamp: Date(day: 7, month: 1, year: 2025), tag: "School", amount: Decimal(10)))
+            container.mainContext.insert(Item(timestamp: Date(day: 7, month: 1, year: 2025), tag: "Groceries", amount: Decimal(10.50)))
             container.mainContext.insert(Item(timestamp: Date(day: 10, month: 1, year: 2025), tag: "Home", amount: Decimal(10)))
             container.mainContext.insert(Item(timestamp: Date(day: 10, month: 1, year: 2025), tag: "Car", amount: Decimal(40)))
             container.mainContext.insert(Item(timestamp: Date(day: 11, month: 1, year: 2025), tag: "Extra", amount: Decimal(100)))
