@@ -8,58 +8,53 @@
 import SwiftUI
 import SwiftData
 
+enum TimeframeType: String, CaseIterable, Identifiable {
+    var id: Self { self }
+    
+    case ByMonth = "Month"
+    case ByWeek = "Week"
+}
+
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     
     @State private var selectedItem: Item?
     @State private var showExpensesDetails: Bool = false
     @State private var monthYear: Date = Date()
-    
-    let monthYearFormat = Date.FormatStyle()
-        .month(.abbreviated)
-        .year(.defaultDigits)
-        .day(.omitted)
-        .locale(Locale(identifier: "en_US"))
+    @State private var timeframeType: TimeframeType = .ByMonth
+
     
     var body: some View {
         NavigationSplitView {
             VStack {
-                ItemListStats(month: monthYear.month, year: monthYear.year, statsTapped: $showExpensesDetails)
-                ItemListView(month: monthYear.month, year: monthYear.year, selectedItem: $selectedItem)
+                ItemListStats(timeframe: timeframeType, date: monthYear, statsTapped: $showExpensesDetails)
+                ItemListView(timeframe: timeframeType, date: monthYear, selectedItem: $selectedItem)
             }
             .onOpenURL { incomingURL in
                 print("App was opened via URL: \(incomingURL)")
                 handleIncomingURL(incomingURL)
             }
             .sheet(isPresented: $showExpensesDetails, content: {
-                ExpensesStatsDetailsView(month: monthYear.month, year: monthYear.year)
+                ExpensesStatsDetailsView(timeframe: timeframeType, date: monthYear)
             })
             .toolbar {
                 ToolbarItemGroup(placement: .navigationBarLeading) {
                     Spacer()
-                    Button(action: {
-                        monthYear = monthYear.previousMonth
-                    }, label: {
-                        Image(systemName: "chevron.left")
-                    })
-                    
-                    Button( action:{
-                        monthYear = Date()
-                    }, label: {
-                        Text("\(monthYear.formatted(monthYearFormat))")
-                            .font(.headline)
-                            .foregroundColor(.accentColor)
-                        
-                    })
-                    
-                    Button( action: {
-                        monthYear = monthYear.nextMonth
-                    }, label: {
-                        Image(systemName: "chevron.right")
-                    })
+                    TimeFrameSelector(
+                        date: monthYear,
+                        timeframeType: timeframeType,
+                        previousAction: { monthYear = prevTimeframe() } ,
+                        nextAction: { monthYear = nextTimeframe() },
+                        tapAction: { monthYear = Date()  }
+                    )
                 }
-                
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
+                    Picker("Visualization", selection: $timeframeType) {
+                        ForEach(TimeframeType.allCases) { type in
+                            Text(type.rawValue).tag(type)
+                        }
+                    }.pickerStyle(.inline)
+                    
                     Button(action: addItem) {
                         Label("Add Item", systemImage: "plus")
                     }
@@ -72,6 +67,22 @@ struct ContentView: View {
             } else {
                 Text("None")
             }
+        }
+    }
+    
+    private func nextTimeframe() -> Date {
+        if timeframeType == .ByMonth {
+            return monthYear.nextMonth
+        } else {
+            return monthYear.nextWeek
+        }
+    }
+    
+    private func prevTimeframe() -> Date {
+        if timeframeType == .ByMonth {
+            return monthYear.previousMonth
+        } else {
+            return monthYear.previousWeek
         }
     }
     

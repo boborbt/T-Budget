@@ -13,12 +13,22 @@ struct ItemListStats: View {
     @Binding private var statsTapped: Bool
     let startDate: Date
     let endDate: Date
+    let timeframe: TimeframeType
     
-    init(month: Int, year: Int, statsTapped: Binding<Bool>) {
+    init(timeframe: TimeframeType, date: Date, statsTapped: Binding<Bool>) {
         self._statsTapped = statsTapped
 
-        startDate = Date(day: 1, month: month, year: year)
-        endDate = Date(day:1, month: (month+1 == 13) ? 1 : month+1, year: (month+1 == 13) ? year+1 : year)
+        self.timeframe = timeframe
+        
+        switch timeframe {
+        case .ByMonth:
+            startDate = date.firstDayOfMonth!
+            endDate = date.lastDayOfMonth!
+        case .ByWeek:
+            startDate = date.firstDayOfWeek!
+            endDate = date.lastDayOfWeek!
+        }
+        
         let predicate = #Predicate<Item> { item in
             if item.timestamp >= startDate && item.timestamp < endDate {
                 return true
@@ -44,6 +54,6 @@ struct ItemListStats: View {
 }
 
 #Preview {
-    ItemListStats(month: 1, year: 2025, statsTapped: .constant(false))
+    ItemListStats(timeframe: .ByMonth, date: Date(), statsTapped: .constant(false))
         .modelContext(DataManager.previewContainer.mainContext)
 }

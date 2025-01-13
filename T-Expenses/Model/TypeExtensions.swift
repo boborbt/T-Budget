@@ -31,4 +31,55 @@ extension Date: Sendable {
     var previousMonth: Date {
         return Calendar.current.date(byAdding: .month, value: -1, to: self)!
     }
+    
+    var nextWeek: Date {
+        return Calendar.current.date(byAdding: .day, value: 7, to: self)!
+    }
+    
+    var previousWeek: Date {
+        return Calendar.current.date(byAdding: .day, value: -7, to: self)!
+    }
+    
+    var firstDayOfMonth: Date? {
+        let calendar = Calendar.current
+        
+        guard let startOfMonth = calendar.dateInterval(of: .month, for: self)?.start else {
+            return nil
+        }
+        
+        return startOfMonth
+    }
+    
+    var lastDayOfMonth: Date? {
+        let calendar = Calendar.current
+        
+        guard let endOfMonth = calendar.dateInterval(of: .month, for: self)?.end else {
+            return nil
+        }
+        
+        return endOfMonth
+    }
+    
+    var firstDayOfWeek: Date? {
+        let calendar = Calendar.current
+        
+        // Find the start of the week for the given date
+        guard let startOfWeek = calendar.dateInterval(of: .weekOfYear, for: self)?.start else {
+            return nil
+        }
+        
+        return startOfWeek
+    }
+    
+    var lastDayOfWeek: Date? {
+        let calendar = Calendar.current
+        
+        guard let endOfWeek = calendar.dateInterval(of: .weekOfYear, for: self)?.end else {
+            return nil
+        }
+        
+        return endOfWeek
+    }
+    
+    
 }

@@ -23,6 +23,7 @@ struct ExpensesStatsDetailsView: View {
     
     private let startDate: Date
     private let endDate: Date
+    private let timeframe: TimeframeType
     private var expenses: [TaggedExpense] {
         var dict: [String:Decimal] = [:]
         for item in self.items {
@@ -38,9 +39,18 @@ struct ExpensesStatsDetailsView: View {
     }
 
     
-    init(month: Int, year: Int) {
-        startDate = Date(day: 1, month: month, year: year)
-        endDate = Date(day:1, month: (month+1 == 13) ? 1 : month+1, year: (month+1 == 13) ? year+1 : year)
+    init(timeframe: TimeframeType, date: Date) {
+        
+        self.timeframe = timeframe
+        
+        switch timeframe {
+        case .ByMonth:
+            startDate = date.firstDayOfMonth!
+            endDate = date.lastDayOfMonth!
+        case .ByWeek:
+            startDate = date.firstDayOfWeek!
+            endDate = date.lastDayOfWeek!
+        }
 
         let predicate = #Predicate<Item> { item in
             if item.timestamp >= startDate && item.timestamp < endDate {
@@ -87,6 +97,6 @@ struct ExpensesStatsDetailsView: View {
 }
 
 #Preview {
-    ExpensesStatsDetailsView(month: 1, year: 2025)
+    ExpensesStatsDetailsView(timeframe: .ByMonth, date: Date())
         .modelContext(DataManager.previewContainer.mainContext)
 }
