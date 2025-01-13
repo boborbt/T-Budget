@@ -22,6 +22,8 @@ struct ContentView: View {
     @State private var showExpensesDetails: Bool = false
     @State private var monthYear: Date = Date()
     @State private var timeframeType: TimeframeType = .ByMonth
+    
+    private let animDuration = 0.001
 
     
     var body: some View {
@@ -43,17 +45,31 @@ struct ContentView: View {
                     TimeFrameSelector(
                         date: monthYear,
                         timeframeType: timeframeType,
-                        previousAction: { monthYear = prevTimeframe() } ,
-                        nextAction: { monthYear = nextTimeframe() },
-                        tapAction: { monthYear = Date()  }
+                        previousAction: {
+                            withAnimation(.linear(duration:animDuration)) {
+                                monthYear = prevTimeframe()
+                            }
+                        } ,
+                        nextAction: {
+                                withAnimation(.linear(duration: animDuration)) {
+                                monthYear = nextTimeframe()
+                            }
+                        },
+                        tapAction: {
+                            withAnimation(.linear(duration: animDuration)) {
+                                monthYear = Date()
+                            }
+                        }
                     )
                 }
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
-                    Picker("Visualization", selection: $timeframeType) {
+                    Picker("Visualization", selection: $timeframeType.animation(.linear(duration: animDuration))) {
                         ForEach(TimeframeType.allCases) { type in
                             Text(type.rawValue).tag(type)
                         }
-                    }.pickerStyle(.inline)
+                    }
+                    .pickerStyle(.inline)
+                    
                     
                     Button(action: addItem) {
                         Label("Add Item", systemImage: "plus")

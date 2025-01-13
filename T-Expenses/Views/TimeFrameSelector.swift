@@ -64,7 +64,7 @@ struct TimeFrameSelector: View {
             let firstDayOfWeek = date.firstDayOfWeek!.day
             let lastDayOfWeek = date.lastDayOfWeek!.day
             let monthNumber = date.firstDayOfWeek!.formatted(monthNameFormat)
-            return "\(firstDayOfWeek) - \(lastDayOfWeek) / \(monthNumber)" 
+            return "\(firstDayOfWeek) - \(lastDayOfWeek) \(monthNumber)" 
         }
     }
 }
