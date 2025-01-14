@@ -21,7 +21,7 @@ struct ContentView: View {
     @State private var selectedItem: Item?
     @State private var showExpensesDetails: Bool = false
     @State private var monthYear: Date = Date()
-    @State private var timeframeType: TimeframeType = .ByMonth
+    @AppStorage("timeframeType") private var timeframeType: TimeframeType = .ByMonth
     
     private let animDuration = 0.001
 
