@@ -1,85 +1,56 @@
 import SwiftUI
 
-struct DateListView: View {
-    @State private var currentDate: Date = Date()
-    @State private var offset: CGFloat = 0
-    @State private var nextDate: Date? = nil
 
+
+struct TestView: View {
+    let dates: [Date] = [Date(),
+                         Date().nextMonth,
+                         Date().nextMonth.nextMonth,
+                         Date().nextMonth.nextMonth.nextMonth
+                        ]
+    let values: [[Int]] = [[1,2,3], [4,5,6], [7,8,9], [10,11,12], [13,14,15]]
+    
+    @State var index: Int = 1
+    @State var forwardSlide: TransitionDirection = .None
+    
+    
     var body: some View {
-        GeometryReader { geometry in
-            let screenWidth = geometry.size.width
-            
-            ZStack {
-                // Current list view
-                listView(for: currentDate)
-                    .offset(x: offset)
-                
-                // Next or previous list view
-                if let nextDate = nextDate {
-                    listView(for: nextDate)
-                        .offset(x: offset + (offset > 0 ? -screenWidth : screenWidth))
+        GeometryReader { gr in
+            NavigationStack {
+                VStack {
+                    List {
+                        ForEach(values[index], id: \.self ) { value in
+                            Text("\(value)")
+                        }
+                    }
+                        .id(dates[index])
+                        .animation(.easeIn(duration:0.5), value: dates[index])
+                        .transition(.dynamicSlide(forward: $forwardSlide, size: gr.size))
                 }
-            }
-            .gesture(
-                DragGesture()
-                    .onChanged { gesture in
-                        // Update the offset interactively based on user swipe
-                        offset = gesture.translation.width
-                        
-                        // Preload the next date
-                        if nextDate == nil {
-                            nextDate = offset < 0
-                                ? Calendar.current.date(byAdding: .day, value: 1, to: currentDate)
-                                : Calendar.current.date(byAdding: .day, value: -1, to: currentDate)
+                .toolbar {
+                    ToolbarItem {
+                        Button("Previous") {
+                            guard index > 0 else { return }
+                            index -= 1
+                            forwardSlide = .Backward
                         }
                     }
-                    .onEnded { gesture in
-                        let dragThreshold: CGFloat = screenWidth / 2
-                        
-                        if abs(gesture.translation.width) > dragThreshold {
-                            // Confirm swipe direction
-                            if offset < 0 {
-                                // Swipe left -> Go to next day
-                                currentDate = nextDate ?? currentDate
-                            } else if offset > 0 {
-                                // Swipe right -> Go to previous day
-                                currentDate = nextDate ?? currentDate
-                            }
-                        }
-                        
-                        // Reset state
-                        withAnimation {
-                            offset = 0
-                            nextDate = nil
+                    ToolbarItem {
+                        Button("Next") {
+                            guard index < values.count - 1 else { return }
+                            index += 1
+                            forwardSlide = .Forward
                         }
                     }
-            )
-            .animation(.easeInOut, value: offset)
-            .navigationTitle(dateString(currentDate))
-        }
-    }
+                    
 
-    // MARK: - Helper Methods
-    
-    func listView(for date: Date) -> some View {
-        List(items(for: date), id: \.self) { item in
-            Text(item)
+                }
+              
+            }
         }
-    }
-    
-    func dateString(_ date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        return formatter.string(from: date)
-    }
-    
-    func items(for date: Date) -> [String] {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "dd MMMM"
-        return ["Item 1 for \(formatter.string(from: date))", "Item 2 for \(formatter.string(from: date))"]
     }
 }
 
 #Preview {
-    DateListView()
+    TestView()
 }

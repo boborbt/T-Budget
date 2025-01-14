@@ -15,6 +15,42 @@ enum TimeframeType: String, CaseIterable, Identifiable {
     case ByWeek = "Week"
 }
 
+enum TransitionDirection {
+    case Forward
+    case Backward
+    case None
+}
+
+extension AnyTransition {
+
+    struct SlideModifier: ViewModifier {
+        let width: CGFloat
+        @Binding var direction: TransitionDirection
+
+        func body(content: Content) -> some View {
+            switch direction {
+                case .Forward: return content.offset(x: width)
+                case .Backward: return content.offset(x: -width)
+                case .None: return content.offset(y: 0)
+            }
+        }
+    }
+
+    static func dynamicSlide(forward: Binding<TransitionDirection>, size: CGSize) -> AnyTransition {
+        .asymmetric(
+            insertion: .modifier(
+                active: SlideModifier(width: size.width, direction: forward),
+                identity: SlideModifier(width: 0, direction: .constant(.Forward))
+            ),
+
+            removal: .modifier(
+                active: SlideModifier(width: -size.width, direction: forward),
+                identity: SlideModifier(width: 0, direction: .constant(.Forward))
+            )
+        )
+    }
+}
+
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     
@@ -22,84 +58,114 @@ struct ContentView: View {
     @State private var showExpensesDetails: Bool = false
     @State private var monthYear: Date = Date()
     @AppStorage("timeframeType") private var timeframeType: TimeframeType = .ByMonth
+    @State private var transitionDirection: TransitionDirection = .None
     
     private let animDuration = 0.001
-
     
     var body: some View {
-        NavigationSplitView {
-            VStack {
-                ItemListStats(timeframe: timeframeType, date: monthYear, statsTapped: $showExpensesDetails)
-                ItemListView(timeframe: timeframeType, date: monthYear, selectedItem: $selectedItem)
-            }
-            .onOpenURL { incomingURL in
-                print("App was opened via URL: \(incomingURL)")
-                handleIncomingURL(incomingURL)
-            }
-            .sheet(isPresented: $showExpensesDetails, content: {
-                ExpensesStatsDetailsView(timeframe: timeframeType, date: monthYear)
-            })
-            .toolbar {
-                ToolbarItemGroup(placement: .navigationBarLeading) {
-                    Spacer()
-                    TimeFrameSelector(
-                        date: monthYear,
-                        timeframeType: timeframeType,
-                        previousAction: {
-                            withAnimation(.linear(duration:animDuration)) {
-                                monthYear = prevTimeframe()
-                            }
-                        } ,
-                        nextAction: {
-                                withAnimation(.linear(duration: animDuration)) {
-                                monthYear = nextTimeframe()
-                            }
-                        },
-                        tapAction: {
-                            withAnimation(.linear(duration: animDuration)) {
-                                monthYear = Date()
+        GeometryReader { gr in
+            NavigationSplitView {
+                VStack {
+                    Group {
+                        ItemListStats(timeframe: timeframeType, date: monthYear, statsTapped: $showExpensesDetails)
+                        ItemListView(timeframe: timeframeType, date: monthYear, selectedItem: $selectedItem)
+                    }
+                    .id(monthYear)
+                    .animation(.easeIn(duration:0.25), value: monthYear)
+                    .transition(.dynamicSlide(forward: $transitionDirection, size: gr.size))
+//                    .swipeActions(edge: .trailing, allowFullSwipe: true, content: )
+//                    .swipeActions(edge: .leading, allowFullSwipe: true, nextTimeframe)
+                }.zIndex(+1000)
+
+                .onOpenURL { incomingURL in
+                    print("App was opened via URL: \(incomingURL)")
+                    handleIncomingURL(incomingURL)
+                }
+                .sheet(isPresented: $showExpensesDetails, content: {
+                    ExpensesStatsDetailsView(timeframe: timeframeType, date: monthYear)
+                })
+                .toolbar {
+                    ToolbarItemGroup(placement: .navigationBarLeading) {
+                        Spacer()
+                        TimeFrameSelector(
+                            date: monthYear,
+                            timeframeType: timeframeType,
+                            previousAction: prevTimeframe,
+                            nextAction: nextTimeframe,
+                            tapAction: todayTimeFrame
+                        )
+                    }
+                    ToolbarItemGroup(placement: .navigationBarTrailing) {
+                        Picker("Visualization", selection: $timeframeType.animation(.linear(duration: animDuration))) {
+                            ForEach(TimeframeType.allCases) { type in
+                                Text(type.rawValue).tag(type)
                             }
                         }
-                    )
-                }
-                ToolbarItemGroup(placement: .navigationBarTrailing) {
-                    Picker("Visualization", selection: $timeframeType.animation(.linear(duration: animDuration))) {
-                        ForEach(TimeframeType.allCases) { type in
-                            Text(type.rawValue).tag(type)
+                        .pickerStyle(.inline)
+                        
+                        
+                        Button(action: addItem) {
+                            Label("Add Item", systemImage: "plus")
                         }
+                        Spacer()
                     }
-                    .pickerStyle(.inline)
-                    
-                    
-                    Button(action: addItem) {
-                        Label("Add Item", systemImage: "plus")
-                    }
-                    Spacer()
                 }
-            }
-        } detail: {
-            if let selectedItem {
-                ItemFormView(item: selectedItem)
-            } else {
-                Text("None")
+            } detail: {
+                if let selectedItem {
+                    ItemFormView(item: selectedItem)
+                } else {
+                    Text("None")
+                }
             }
         }
     }
     
-    private func nextTimeframe() -> Date {
-        if timeframeType == .ByMonth {
-            return monthYear.nextMonth
+    fileprivate func todayTimeFrame() {
+        if Date() > monthYear {
+            transitionDirection = .Forward
         } else {
-            return monthYear.nextWeek
+            transitionDirection = .Backward
+        }
+
+        gotoToday()
+    }
+    
+    
+    fileprivate func gotoToday() {
+        let now = Date()
+        if timeframeType == .ByMonth {
+            if now.year != monthYear.year || now.month != monthYear.month {
+                monthYear = now
+            }
+        }
+        
+        if timeframeType == .ByWeek {
+            if now.year != monthYear.year ||
+                now.month != monthYear.month ||
+                now.firstDayOfWeek != monthYear.firstDayOfWeek {
+                monthYear = now
+            }
         }
     }
     
-    private func prevTimeframe() -> Date {
+    private func nextTimeframe() {
         if timeframeType == .ByMonth {
-            return monthYear.previousMonth
+            monthYear = monthYear.nextMonth
         } else {
-            return monthYear.previousWeek
+            monthYear = monthYear.nextWeek
         }
+        
+        transitionDirection = .Forward
+    }
+    
+    private func prevTimeframe()  {
+        if timeframeType == .ByMonth {
+            monthYear = monthYear.previousMonth
+        } else {
+            monthYear = monthYear.previousWeek
+        }
+        
+        transitionDirection = .Backward
     }
     
     private func formatDay(date: Date) -> Int {
