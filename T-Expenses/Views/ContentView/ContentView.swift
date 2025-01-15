@@ -8,48 +8,10 @@
 import SwiftUI
 import SwiftData
 
-enum TimeframeType: String, CaseIterable, Identifiable {
-    var id: Self { self }
-    
-    case ByMonth = "Month"
-    case ByWeek = "Week"
-}
 
-enum TransitionDirection {
-    case Forward
-    case Backward
-    case None
-}
 
-extension AnyTransition {
 
-    struct SlideModifier: ViewModifier {
-        let width: CGFloat
-        @Binding var direction: TransitionDirection
 
-        func body(content: Content) -> some View {
-            switch direction {
-                case .Forward: return content.offset(x: width)
-                case .Backward: return content.offset(x: -width)
-                case .None: return content.offset(y: 0)
-            }
-        }
-    }
-
-    static func dynamicSlide(forward: Binding<TransitionDirection>, size: CGSize) -> AnyTransition {
-        .asymmetric(
-            insertion: .modifier(
-                active: SlideModifier(width: size.width, direction: forward),
-                identity: SlideModifier(width: 0, direction: .constant(.Forward))
-            ),
-
-            removal: .modifier(
-                active: SlideModifier(width: -size.width, direction: forward),
-                identity: SlideModifier(width: 0, direction: .constant(.Forward))
-            )
-        )
-    }
-}
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
@@ -61,6 +23,8 @@ struct ContentView: View {
     @State private var transitionDirection: TransitionDirection = .None
     
     private let animDuration = 0.001
+    private let verticalTolerance: CGFloat = 100
+
     
     var body: some View {
         GeometryReader { gr in
@@ -86,7 +50,6 @@ struct ContentView: View {
                 })
                 .toolbar {
                     ToolbarItemGroup(placement: .navigationBarLeading) {
-                        Spacer()
                         TimeFrameSelector(
                             date: monthYear,
                             timeframeType: timeframeType,
@@ -119,15 +82,18 @@ struct ContentView: View {
             }
         }
     }
+}
+
+extension ContentView {
     
     fileprivate func getSwipeGesture() -> some Gesture {
         DragGesture(minimumDistance: 3.0, coordinateSpace: .local)
             .onEnded { value in
                 
-                if value.translation.width < 0 && value.translation.height > -30 && value.translation.height < 30 {
+                if value.translation.width < 0 && value.translation.height > -verticalTolerance && value.translation.height < verticalTolerance {
                     nextTimeframe()
                 }
-                else if value.translation.width > 0 && value.translation.height > -30 && value.translation.height < 30 {
+                else if value.translation.width > 0 && value.translation.height > -verticalTolerance && value.translation.height < verticalTolerance {
                     prevTimeframe()
                 }
             }

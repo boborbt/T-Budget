@@ -9,7 +9,28 @@ import SwiftUI
 import CurrencyField
 import Combine
 
+@MainActor
+struct DeleteButton: View {
+    @State var isShowingDeleteConfirmation: Bool = false
+    let action: () -> Void
+    
+    init(action: @escaping () -> Void) {
+        self.action = action
+    }
 
+    
+    var body: some View {
+        Button("Delete", role: .destructive) {
+            isShowingDeleteConfirmation = true
+        }
+        .buttonStyle(.bordered)
+        .confirmationDialog("Are you sure?",
+                            isPresented: $isShowingDeleteConfirmation,
+                            actions: {
+            Button("Delete", role: .destructive, action: action)
+        })
+    }
+}
 
 struct ItemFormView: View {
     @Environment(\.modelContext) private var modelContext
@@ -59,19 +80,10 @@ struct ItemFormView: View {
 //        .navigationBarBackButtonHidden(true)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                Button("Delete", role: .destructive) {
-                    isShowingDeleteConfirmation = true
+                DeleteButton() {
+                    modelContext.delete(item)
+                    dismiss()
                 }
-                .buttonStyle(.bordered)
-                .confirmationDialog("Are you sure?",
-                                    isPresented: $isShowingDeleteConfirmation,
-                                    actions: {
-                    Button("Delete?", role: .destructive) {
-                        modelContext.delete(item)
-                        dismiss()
-                    }
-                })
-                
             }
             
             ToolbarItem(placement: .topBarTrailing) {

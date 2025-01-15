@@ -36,24 +36,24 @@ struct TimeFrameSelector: View {
     }
         
     var body: some View {
-        HStack {
+        HStack(spacing: 5) {
             Button(action: previousTimeFrameAction,
                    label: {
                 Image(systemName: "chevron.left")
-            })
+            }).offset(x:15)
             
             Button( action: curTimeFrameTapAction,
                     label: {
                 Text(formatDate())
                     .font(.headline)
                     .foregroundColor(.accentColor)
-                
+                    .frame(width: 110)
             })
             
             Button( action: nextTimeFrameAction,
                     label: {
                 Image(systemName: "chevron.right")
-            })
+            }).offset(x:-15)
         }
     }
     
