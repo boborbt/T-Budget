@@ -51,7 +51,6 @@ struct ItemListView: View {
                             ItemView(item: item)
                         }
                     }
-                    .onDelete(perform: deleteItems)
                     .onChange(of: items) {
                         if let itemId = ActionManager.editItem {
                             self.selectedItem = self.items.first(where: { item in
@@ -73,15 +72,7 @@ struct ItemListView: View {
                 }
             }
         }
-    }
-    
-    private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            for index in offsets {
-                modelContext.delete(items[index])
-            }
-        }
-    }
+    }    
 }
 
 #Preview {

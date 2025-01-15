@@ -9,10 +9,14 @@ import SwiftUI
 import CurrencyField
 import Combine
 
+
+
 struct ItemFormView: View {
+    @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
     @State var item: Item
     @State var amount: Int
+    @State var isShowingDeleteConfirmation: Bool = false
     
     init(item: Item) {
         self.item = item
@@ -55,13 +59,28 @@ struct ItemFormView: View {
 //        .navigationBarBackButtonHidden(true)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                Button(action: {
-                    dismiss()
-                }, label: {
-                    Text("Done")
+                Button("Delete", role: .destructive) {
+                    isShowingDeleteConfirmation = true
+                }
+                .buttonStyle(.bordered)
+                .confirmationDialog("Are you sure?",
+                                    isPresented: $isShowingDeleteConfirmation,
+                                    actions: {
+                    Button("Delete?", role: .destructive) {
+                        modelContext.delete(item)
+                        dismiss()
+                    }
                 })
+                
+            }
+            
+            ToolbarItem(placement: .topBarTrailing) {
+                Button("Done") {
+                    dismiss()
+                }.buttonStyle(.bordered)
             }
         }
+
     }
 }
 

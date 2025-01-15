@@ -73,9 +73,9 @@ struct ContentView: View {
                     .id(monthYear)
                     .animation(.easeIn(duration:0.25), value: monthYear)
                     .transition(.dynamicSlide(forward: $transitionDirection, size: gr.size))
-//                    .swipeActions(edge: .trailing, allowFullSwipe: true, content: )
-//                    .swipeActions(edge: .leading, allowFullSwipe: true, nextTimeframe)
-                }.zIndex(+1000)
+                    .gesture(getSwipeGesture())
+                    
+                }
 
                 .onOpenURL { incomingURL in
                     print("App was opened via URL: \(incomingURL)")
@@ -118,6 +118,19 @@ struct ContentView: View {
                 }
             }
         }
+    }
+    
+    fileprivate func getSwipeGesture() -> some Gesture {
+        DragGesture(minimumDistance: 3.0, coordinateSpace: .local)
+            .onEnded { value in
+                
+                if value.translation.width < 0 && value.translation.height > -30 && value.translation.height < 30 {
+                    nextTimeframe()
+                }
+                else if value.translation.width > 0 && value.translation.height > -30 && value.translation.height < 30 {
+                    prevTimeframe()
+                }
+            }
     }
     
     fileprivate func todayTimeFrame() {
