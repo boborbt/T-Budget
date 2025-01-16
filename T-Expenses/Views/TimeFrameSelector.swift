@@ -48,7 +48,9 @@ struct TimeFrameSelector: View {
                     .font(.headline)
                     .foregroundColor(.accentColor)
                     .frame(width: 120)
-            })
+            }).transaction { transaction in
+                transaction.animation = nil
+            }
             
             Button( action: nextTimeFrameAction,
                     label: {

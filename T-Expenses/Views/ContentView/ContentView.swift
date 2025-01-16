@@ -38,9 +38,10 @@ struct ContentView: View {
     @AppStorage("timeframeType") private var timeframeType: TimeframeType = .ByMonth
     @State private var transitionDirection: TransitionDirection = .None
     @State private var offset: CGSize = .zero
-    
-    private let animDuration = 0.001
-    private let verticalTolerance: CGFloat = 100
+
+    private static let dragAnimDuration: TimeInterval = 0.5
+    private static let resetAfterDragDuration: TimeInterval = 0.001
+    private static let verticalTolerance: CGFloat = 100
     
     var prevTimeframe: Date {
         switch timeframeType {
@@ -67,25 +68,29 @@ struct ContentView: View {
                     MainItemsView(timeframeType: timeframeType, date: self.nextTimeframe, selectedItem: $selectedItem, showExpensesDetails: $showExpensesDetails)
                         .offset(x: gr.size.width)
                 }
-                    .offset(x: offset.width)
-                    .gesture(
-                        DragGesture()
-                            .onChanged { gesture in
-                                offset = gesture.translation
-                            }
-                            .onEnded { _ in
-                                if offset.width > 100 {
-                                    setPrevTimeframe(screenWidth: gr.size.width)
-                                } else if offset.width < -100 {
-                                    setNextTimeframe(screenWidth: gr.size.width)
-                                } else {
-                                    withAnimation {
-                                        offset = .zero
-                                    }
+                .offset(x: offset.width)
+                .gesture(
+                    DragGesture()
+                        .onChanged { gesture in
+                            offset = gesture.translation
+                        }
+                        .onEnded { gesture in
+                            
+                            let duration = min(gr.size.width / abs(gesture.velocity.width), 0.5)
+
+                            if offset.width > 100 {
+                                setPrevTimeframe(screenWidth: gr.size.width,
+                                                 duration: duration)
+                            } else if offset.width < -100 {
+                                setNextTimeframe(screenWidth: gr.size.width,
+                                                 duration: duration)
+                            } else {
+                                withAnimation(.easeInOut(duration: Self.dragAnimDuration)) {
+                                    offset = .zero
                                 }
                             }
-                    )
-
+                        }
+                )
                 .onOpenURL { incomingURL in
                     print("App was opened via URL: \(incomingURL)")
                     handleIncomingURL(incomingURL)
@@ -104,7 +109,7 @@ struct ContentView: View {
                         )
                     }
                     ToolbarItemGroup(placement: .navigationBarTrailing) {
-                        Picker("Visualization", selection: $timeframeType.animation(.linear(duration: animDuration))) {
+                        Picker("Visualization", selection: $timeframeType.animation()) {
                             ForEach(TimeframeType.allCases) { type in
                                 Text(type.rawValue).tag(type)
                             }
@@ -177,41 +182,26 @@ extension ContentView {
         }
     }
     
-    private func setNextTimeframe(screenWidth: CGFloat) {
-        withAnimation {
+    private func setNextTimeframe(screenWidth: CGFloat, duration: TimeInterval = dragAnimDuration) {
+        withAnimation(.easeInOut(duration: duration)) {
             offset.width = -screenWidth
         } completion: {
-            withAnimation(.linear(duration:0.001)) {
+            withAnimation(.easeOut(duration: Self.resetAfterDragDuration)) {
                 monthYear = self.nextTimeframe
                 offset = .zero
             }
         }
-        
-//        if timeframeType == .ByMonth {
-//            monthYear = monthYear.nextMonth
-//        } else {
-//            monthYear = monthYear.nextWeek
-//        }
-//        
-//        transitionDirection = .Forward
     }
     
-    private func setPrevTimeframe(screenWidth: CGFloat)  {        
-        withAnimation {
+    private func setPrevTimeframe(screenWidth: CGFloat, duration: TimeInterval = dragAnimDuration)  {
+        withAnimation(.easeOut(duration: duration)) {
             offset.width = screenWidth
         } completion: {
-            withAnimation(.linear(duration:0.001)) {
+            withAnimation(.easeInOut(duration: Self.resetAfterDragDuration)) {
                 monthYear = self.prevTimeframe
-                offset = .zero
             }
+            offset = .zero
         }
-//        if timeframeType == .ByMonth {
-//            monthYear = monthYear.previousMonth
-//        } else {
-//            monthYear = monthYear.previousWeek
-//        }
-//        
-//        transitionDirection = .Backward
     }
     
     private func formatDay(date: Date) -> Int {
