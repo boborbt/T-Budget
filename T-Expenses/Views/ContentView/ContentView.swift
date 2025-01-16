@@ -9,6 +9,22 @@ import SwiftUI
 import SwiftData
 
 
+struct MainItemsView: View {
+    let timeframeType: TimeframeType
+    let date: Date
+    @Binding var selectedItem: Item?
+    @Binding var showExpensesDetails: Bool
+    
+    var body: some View {
+        Group {
+            VStack {
+                ItemListStats(timeframe: timeframeType, date: date, statsTapped: $showExpensesDetails)
+                ItemListView(timeframe: timeframeType, date: date, selectedItem: $selectedItem)
+            }
+        }
+        .id(date)
+    }
+}
 
 
 
@@ -21,25 +37,54 @@ struct ContentView: View {
     @State private var monthYear: Date = Date()
     @AppStorage("timeframeType") private var timeframeType: TimeframeType = .ByMonth
     @State private var transitionDirection: TransitionDirection = .None
+    @State private var offset: CGSize = .zero
     
     private let animDuration = 0.001
     private let verticalTolerance: CGFloat = 100
+    
+    var prevTimeframe: Date {
+        switch timeframeType {
+            case .ByMonth: return monthYear.previousMonth
+            case .ByWeek: return monthYear.previousWeek
+        }
+    }
+    
+    var nextTimeframe: Date {
+        switch timeframeType {
+        case .ByMonth: return monthYear.nextMonth
+        case .ByWeek: return monthYear.nextWeek
+        }
+    }
 
     
     var body: some View {
         GeometryReader { gr in
             NavigationSplitView {
-                VStack {
-                    Group {
-                        ItemListStats(timeframe: timeframeType, date: monthYear, statsTapped: $showExpensesDetails)
-                        ItemListView(timeframe: timeframeType, date: monthYear, selectedItem: $selectedItem)
-                    }
-                    .id(monthYear)
-                    .animation(.easeIn(duration:0.25), value: monthYear)
-                    .transition(.dynamicSlide(forward: $transitionDirection, size: gr.size))
-                    .gesture(getSwipeGesture())
-                    
+                ZStack {
+                    MainItemsView(timeframeType: timeframeType, date: self.prevTimeframe, selectedItem: $selectedItem, showExpensesDetails: $showExpensesDetails)
+                        .offset(x: -gr.size.width)
+                    MainItemsView(timeframeType: timeframeType, date: monthYear, selectedItem: $selectedItem, showExpensesDetails: $showExpensesDetails)
+                    MainItemsView(timeframeType: timeframeType, date: self.nextTimeframe, selectedItem: $selectedItem, showExpensesDetails: $showExpensesDetails)
+                        .offset(x: gr.size.width)
                 }
+                    .offset(x: offset.width)
+                    .gesture(
+                        DragGesture()
+                            .onChanged { gesture in
+                                offset = gesture.translation
+                            }
+                            .onEnded { _ in
+                                if offset.width > 100 {
+                                    setPrevTimeframe(screenWidth: gr.size.width)
+                                } else if offset.width < -100 {
+                                    setNextTimeframe(screenWidth: gr.size.width)
+                                } else {
+                                    withAnimation {
+                                        offset = .zero
+                                    }
+                                }
+                            }
+                    )
 
                 .onOpenURL { incomingURL in
                     print("App was opened via URL: \(incomingURL)")
@@ -53,9 +98,9 @@ struct ContentView: View {
                         TimeFrameSelector(
                             date: monthYear,
                             timeframeType: timeframeType,
-                            previousAction: prevTimeframe,
-                            nextAction: nextTimeframe,
-                            tapAction: todayTimeFrame
+                            previousAction: {  setPrevTimeframe(screenWidth: gr.size.width) },
+                            nextAction: { setNextTimeframe(screenWidth: gr.size.width) },
+                            tapAction: setTodayTimeframe
                         )
                     }
                     ToolbarItemGroup(placement: .navigationBarTrailing) {
@@ -86,20 +131,23 @@ struct ContentView: View {
 
 extension ContentView {
     
-    fileprivate func getSwipeGesture() -> some Gesture {
-        DragGesture(minimumDistance: 3.0, coordinateSpace: .local)
-            .onEnded { value in
-                
-                if value.translation.width < 0 && value.translation.height > -verticalTolerance && value.translation.height < verticalTolerance {
-                    nextTimeframe()
-                }
-                else if value.translation.width > 0 && value.translation.height > -verticalTolerance && value.translation.height < verticalTolerance {
-                    prevTimeframe()
-                }
-            }
-    }
+//    fileprivate func getSwipeGesture() -> some Gesture {
+//        DragGesture(minimumDistance: 3.0, coordinateSpace: .local)
+//            .onChanged { value in
+//                print(value.translation)
+//            }
+//            .onEnded { value in
+//                
+//                if value.translation.width < 0 && value.translation.height > -verticalTolerance && value.translation.height < verticalTolerance {
+//                    nextTimeframe()
+//                }
+//                else if value.translation.width > 0 && value.translation.height > -verticalTolerance && value.translation.height < verticalTolerance {
+//                    prevTimeframe(gr.size.width)
+//                }
+//            }
+//    }
     
-    fileprivate func todayTimeFrame() {
+    fileprivate func setTodayTimeframe() {
         if Date() > monthYear {
             transitionDirection = .Forward
         } else {
@@ -122,29 +170,48 @@ extension ContentView {
             if now.year != monthYear.year ||
                 now.month != monthYear.month ||
                 now.firstDayOfWeek != monthYear.firstDayOfWeek {
-                monthYear = now
+                withAnimation {
+                    monthYear = now
+                }
             }
         }
     }
     
-    private func nextTimeframe() {
-        if timeframeType == .ByMonth {
-            monthYear = monthYear.nextMonth
-        } else {
-            monthYear = monthYear.nextWeek
+    private func setNextTimeframe(screenWidth: CGFloat) {
+        withAnimation {
+            offset.width = -screenWidth
+        } completion: {
+            withAnimation(.linear(duration:0.001)) {
+                monthYear = self.nextTimeframe
+                offset = .zero
+            }
         }
         
-        transitionDirection = .Forward
+//        if timeframeType == .ByMonth {
+//            monthYear = monthYear.nextMonth
+//        } else {
+//            monthYear = monthYear.nextWeek
+//        }
+//        
+//        transitionDirection = .Forward
     }
     
-    private func prevTimeframe()  {
-        if timeframeType == .ByMonth {
-            monthYear = monthYear.previousMonth
-        } else {
-            monthYear = monthYear.previousWeek
+    private func setPrevTimeframe(screenWidth: CGFloat)  {        
+        withAnimation {
+            offset.width = screenWidth
+        } completion: {
+            withAnimation(.linear(duration:0.001)) {
+                monthYear = self.prevTimeframe
+                offset = .zero
+            }
         }
-        
-        transitionDirection = .Backward
+//        if timeframeType == .ByMonth {
+//            monthYear = monthYear.previousMonth
+//        } else {
+//            monthYear = monthYear.previousWeek
+//        }
+//        
+//        transitionDirection = .Backward
     }
     
     private func formatDay(date: Date) -> Int {

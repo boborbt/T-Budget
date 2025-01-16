@@ -47,7 +47,7 @@ struct TimeFrameSelector: View {
                 Text(formatDate())
                     .font(.headline)
                     .foregroundColor(.accentColor)
-                    .frame(width: 110)
+                    .frame(width: 120)
             })
             
             Button( action: nextTimeFrameAction,
