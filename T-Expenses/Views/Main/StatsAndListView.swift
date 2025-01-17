@@ -17,7 +17,7 @@ struct StatsAndListView: View {
         Group {
             VStack {
                 Button(action: { showExpensesDetails = true } ) {
-                    StatsSummary(timeframe: timeframeType, date: date)
+                    StatsView(timeframe: timeframeType, date: date)
                 }
                 ItemListView(timeframe: timeframeType, date: date, selectedItem: $selectedItem)
             }

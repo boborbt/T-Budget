@@ -46,15 +46,14 @@ struct ContentView: View {
     
     var body: some View {
         GeometryReader { gr in
-            NavigationSplitView(columnVisibility:.constant(.all)) {
+            NavigationSplitView {
                 ZStack {
-                    StatsAndListView(timeframeType: timeframeType, date: self.prevTimeframe, selectedItem: $selectedItem, showExpensesDetails: $showExpensesDetails)
+                    StatsAndListView(timeframeType: timeframeType, date: self.prevTimeframe, selectedItem: .constant(nil), showExpensesDetails: .constant(false))
                         .offset(x: -gr.size.width)
                     StatsAndListView(timeframeType: timeframeType, date: monthYear, selectedItem: $selectedItem, showExpensesDetails: $showExpensesDetails)
-                    StatsAndListView(timeframeType: timeframeType, date: self.nextTimeframe, selectedItem: $selectedItem, showExpensesDetails: $showExpensesDetails)
+                    StatsAndListView(timeframeType: timeframeType, date: self.nextTimeframe, selectedItem: .constant(nil), showExpensesDetails: .constant(false))
                         .offset(x: gr.size.width)
                 }
-                .toolbar(removing: .sidebarToggle)
                 .offset(x: offset.width)
                 .gesture(
                     DragGesture()
@@ -83,7 +82,7 @@ struct ContentView: View {
                     handleIncomingURL(incomingURL)
                 }
                 .sheet(isPresented: $showExpensesDetails, content: {
-                    ExpensesStatsDetailsView(timeframe: timeframeType, date: monthYear)
+                    StatsChartView(timeframe: timeframeType, date: monthYear)
                 })
                 .toolbar {
                     ToolbarItemGroup(placement: .navigationBarLeading) {
@@ -118,7 +117,6 @@ struct ContentView: View {
                 }
             }
         }
-        .navigationSplitViewStyle(.balanced)
     }
 }
 

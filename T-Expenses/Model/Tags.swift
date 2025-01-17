@@ -25,15 +25,20 @@ enum Tags: String, CaseIterable, Identifiable {
         case .Other: return "questionmark.circle"
         }
     }
+    
+    static func icon(rawValue: String) -> Image {
+        guard let tag = Tags(rawValue: rawValue) else {
+            return Image(systemName: "questionmark")
+        }
+        let iconName = Tags.iconName(tag)
+        
+        return Image(systemName: iconName)
+    }
 }
 
 extension Tags: AppEnum {
     static var typeDisplayRepresentation: TypeDisplayRepresentation {
         TypeDisplayRepresentation(name: "Tags")
-    }
-    
-    static func displayRepresentationImage(tag: Tags) -> DisplayRepresentation.Image {
-        return DisplayRepresentation.Image(named: "house")
     }
     
     // It would be much better to just use Tags.iconName(Tags.<TAG>) instead of hard constants,
