@@ -9,22 +9,7 @@ import SwiftUI
 import SwiftData
 
 
-struct MainItemsView: View {
-    let timeframeType: TimeframeType
-    let date: Date
-    @Binding var selectedItem: Item?
-    @Binding var showExpensesDetails: Bool
-    
-    var body: some View {
-        Group {
-            VStack {
-                ItemListStats(timeframe: timeframeType, date: date, statsTapped: $showExpensesDetails)
-                ItemListView(timeframe: timeframeType, date: date, selectedItem: $selectedItem)
-            }
-        }
-        .id(date)
-    }
-}
+
 
 
 
@@ -42,6 +27,7 @@ struct ContentView: View {
     private static let dragAnimDuration: TimeInterval = 0.5
     private static let resetAfterDragDuration: TimeInterval = 0.001
     private static let verticalTolerance: CGFloat = 100
+    private static let horizontalTolerance: CGFloat = 100
     
     var prevTimeframe: Date {
         switch timeframeType {
@@ -62,10 +48,10 @@ struct ContentView: View {
         GeometryReader { gr in
             NavigationSplitView {
                 ZStack {
-                    MainItemsView(timeframeType: timeframeType, date: self.prevTimeframe, selectedItem: $selectedItem, showExpensesDetails: $showExpensesDetails)
+                    StatsAndListView(timeframeType: timeframeType, date: self.prevTimeframe, selectedItem: $selectedItem, showExpensesDetails: $showExpensesDetails)
                         .offset(x: -gr.size.width)
-                    MainItemsView(timeframeType: timeframeType, date: monthYear, selectedItem: $selectedItem, showExpensesDetails: $showExpensesDetails)
-                    MainItemsView(timeframeType: timeframeType, date: self.nextTimeframe, selectedItem: $selectedItem, showExpensesDetails: $showExpensesDetails)
+                    StatsAndListView(timeframeType: timeframeType, date: monthYear, selectedItem: $selectedItem, showExpensesDetails: $showExpensesDetails)
+                    StatsAndListView(timeframeType: timeframeType, date: self.nextTimeframe, selectedItem: $selectedItem, showExpensesDetails: $showExpensesDetails)
                         .offset(x: gr.size.width)
                 }
                 .offset(x: offset.width)
@@ -75,8 +61,8 @@ struct ContentView: View {
                             offset = gesture.translation
                         }
                         .onEnded { gesture in
-                            
-                            let duration = min(gr.size.width / abs(gesture.velocity.width), 0.5)
+                            let remainingOffset = gr.size.width - abs(offset.width)
+                            let duration = min(remainingOffset / abs(gesture.velocity.width), 0.5)
 
                             if offset.width > 100 {
                                 setPrevTimeframe(screenWidth: gr.size.width,
@@ -136,21 +122,6 @@ struct ContentView: View {
 
 extension ContentView {
     
-//    fileprivate func getSwipeGesture() -> some Gesture {
-//        DragGesture(minimumDistance: 3.0, coordinateSpace: .local)
-//            .onChanged { value in
-//                print(value.translation)
-//            }
-//            .onEnded { value in
-//                
-//                if value.translation.width < 0 && value.translation.height > -verticalTolerance && value.translation.height < verticalTolerance {
-//                    nextTimeframe()
-//                }
-//                else if value.translation.width > 0 && value.translation.height > -verticalTolerance && value.translation.height < verticalTolerance {
-//                    prevTimeframe(gr.size.width)
-//                }
-//            }
-//    }
     
     fileprivate func setTodayTimeframe() {
         if Date() > monthYear {

@@ -7,17 +7,15 @@
 import SwiftUI
 import SwiftData
 
-struct ItemListStats: View {
+struct StatsSummary: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var items: [Item]
-    @Binding private var statsTapped: Bool
+
     let startDate: Date
     let endDate: Date
     let timeframe: TimeframeType
     
-    init(timeframe: TimeframeType, date: Date, statsTapped: Binding<Bool>) {
-        self._statsTapped = statsTapped
-
+    init(timeframe: TimeframeType, date: Date) {
         self.timeframe = timeframe
         
         switch timeframe {
@@ -45,15 +43,12 @@ struct ItemListStats: View {
                 Label("\(items.count) items", systemImage: "bolt.fill")
                 Label("\(items.reduce(Decimal(0.0)) { $0 + $1.amount }, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))", systemImage: "eurosign.bank.building")
             }
-            .onTapGesture {
-                statsTapped = true
-            }
         }
     }
 
 }
 
 #Preview {
-    ItemListStats(timeframe: .ByMonth, date: Date(), statsTapped: .constant(false))
+    StatsSummary(timeframe: .ByMonth, date: Date())
         .modelContext(DataManager.previewContainer.mainContext)
 }
