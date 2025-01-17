@@ -46,7 +46,7 @@ struct ContentView: View {
     
     var body: some View {
         GeometryReader { gr in
-            NavigationSplitView {
+            NavigationSplitView(columnVisibility:.constant(.all)) {
                 ZStack {
                     StatsAndListView(timeframeType: timeframeType, date: self.prevTimeframe, selectedItem: $selectedItem, showExpensesDetails: $showExpensesDetails)
                         .offset(x: -gr.size.width)
@@ -54,6 +54,7 @@ struct ContentView: View {
                     StatsAndListView(timeframeType: timeframeType, date: self.nextTimeframe, selectedItem: $selectedItem, showExpensesDetails: $showExpensesDetails)
                         .offset(x: gr.size.width)
                 }
+                .toolbar(removing: .sidebarToggle)
                 .offset(x: offset.width)
                 .gesture(
                     DragGesture()
@@ -117,6 +118,7 @@ struct ContentView: View {
                 }
             }
         }
+        .navigationSplitViewStyle(.balanced)
     }
 }
 
