@@ -130,7 +130,7 @@ struct TaggedExpensesView : View {
                     Image(systemName: "clock")
                         .frame(width: Self.timeColWidth)
                     Spacer()
-                    Image(systemName: "eurosign")
+                    Image(systemName: "eurosign.circle")
                 }
                 List {
                     ForEach(te.items) { item in

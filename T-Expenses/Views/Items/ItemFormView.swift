@@ -49,8 +49,12 @@ struct ItemFormView: View {
     var body: some View {
         Form {
             Section("New Expense") {
-                DatePicker("Date", selection: $item.timestamp)
                 HStack {
+                    Image(systemName: "calendar")
+                    DatePicker("Date", selection: $item.timestamp)
+                }
+                HStack {
+                    Image(systemName: "tag")
                     Text("Tag")
                         .frame(width:100, alignment: .leading)
                     Picker("Tag", selection: $item.tag) {
@@ -66,6 +70,7 @@ struct ItemFormView: View {
                     }.pickerStyle(.wheel)
                 }
                 HStack {
+                    Image(systemName: "eurosign.circle")
                     Text("Amount")
                         .frame(width:100, alignment: .leading)
                     Spacer()

@@ -60,14 +60,15 @@ struct ItemListView: View {
                     }
                 } header: {
                     HStack {
-                        Text("Day")
+                        Image(systemName: "calendar")
                             .frame(width: 30, alignment: .trailing)
+                        Image(systemName: "tag")
                         Text("Tag")
-                            .padding(.horizontal, 8)
-                        Spacer()
-                        Text("Amount")
                             .padding(.leading, 8)
-                            .padding(.trailing, 30.0)
+                        Spacer()
+                        Image(systemName:"eurosign.circle")
+                        Text("Amount")
+                            .padding(.trailing, 10.0)
                     }
                 }
             }
