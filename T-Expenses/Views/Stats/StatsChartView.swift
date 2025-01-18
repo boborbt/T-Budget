@@ -18,6 +18,12 @@ struct TaggedExpense: Identifiable {
     var amount: Decimal
     var items: [Item]
     
+    var sortedItems: [Item] {
+        self.items.sorted {
+            $0.timestamp > $1.timestamp
+        }
+    }
+    
     init(tag: String) {
         self.tag = tag
         self.amount = 0
@@ -133,7 +139,7 @@ struct TaggedExpensesView : View {
                     Image(systemName: "eurosign.circle")
                 }
                 List {
-                    ForEach(te.items) { item in
+                    ForEach(te.sortedItems) { item in
                         HStack {
                             Text(formatDate(item.timestamp))
                                 .frame(width: Self.dateColWidth)
