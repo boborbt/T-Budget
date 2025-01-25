@@ -10,12 +10,14 @@ import SwiftUI
 
 
 enum Tags: String, CaseIterable, Identifiable {
-    case Home, Health, Car, Groceries, School, Lunches, Extras, Other
+    case Home, Clothes, Health, Car, Groceries, School, Lunches, Travel, Extras, Other
     var id: Self { self }
     
     static func iconName(_ tag: Tags) -> String {
         switch tag {
+        case .Travel: return "airplane"
         case .Home: return "house"
+        case .Clothes: return "tshirt"
         case .Health: return "cross.case"
         case .Car: return "car"
         case .Groceries: return "takeoutbag.and.cup.and.straw"
@@ -50,6 +52,8 @@ extension Tags: AppEnum {
     static let caseDisplayRepresentations: [Tags : DisplayRepresentation] = [
         .Home:       .init(title: "Home",
                            image: .init(systemName: "house")),
+        .Clothes:    .init(title: "Clothes",
+                           image: .init(systemName: "tshirt")),
         .Health:     .init(title: "Health",
                            image: .init(systemName:"cross.case")),
          .Car:       .init(title: "Car",
@@ -60,6 +64,8 @@ extension Tags: AppEnum {
                            image: .init(systemName: "graduationcap")),
          .Lunches:   .init(title: "Lunches",
                            image: .init(systemName: "fork.knife")),
+         .Travel:    .init(title: "Travel",
+                          image: .init(systemName: "airplane")),
          .Extras:    .init(title: "Extras",
                            image: .init(systemName: "cup.and.saucer")),
          .Other:     .init(title: "Other",
