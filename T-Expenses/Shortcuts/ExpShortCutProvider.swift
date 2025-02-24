@@ -24,7 +24,11 @@ struct ExpShortCutProvider: AppShortcutsProvider {
         AppShortcut(intent: ExportExpenses(),
                     phrases: ["Export my expenses"],
                     shortTitle: "Export",
-                    systemImageName: "square.and.arrow.down"
+                    systemImageName: "square.and.arrow.up"
         )
+        AppShortcut(intent: ExportExpensesInRange(),
+                    phrases: ["Export my expenses between dates"],
+                    shortTitle: "Export in range",
+                    systemImageName: "square.and.arrow.up")
     }
 }

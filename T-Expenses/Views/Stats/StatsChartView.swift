@@ -31,9 +31,11 @@ struct TaggedExpense: Identifiable {
     }
 }
 
+
 struct StatsChartView: View {
     @Query private var items: [Item]
     @State private var selectedTaggedExpense: TaggedExpense? = nil
+    @State private var showConfigureLimitsView: Bool = false
     
     private let startDate: Date
     private let endDate: Date
@@ -114,7 +116,15 @@ struct StatsChartView: View {
                 }
             }.sheet(item: $selectedTaggedExpense) { te in
                 TaggedExpensesView(te:te)
+            }.sheet(isPresented: $showConfigureLimitsView) {
+                ConfigureLimitsView()
             }
+            Button {
+                showConfigureLimitsView = true
+            } label: {
+                Image(systemName: "gear")
+            }
+
         }
         
     }
