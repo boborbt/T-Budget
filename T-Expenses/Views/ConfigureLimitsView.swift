@@ -25,7 +25,7 @@ struct ConfigureLimitsView: View {
                             Image(systemName: Tags.iconName(Tags(rawValue: limit.tag)!))
                             Text(limit.tag)
                             Spacer()
-                            Text(limit.amount.description)
+                            Text(limit.amount, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
                         }
                     }
                 }
