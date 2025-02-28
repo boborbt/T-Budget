@@ -31,9 +31,42 @@ struct TaggedExpense: Identifiable {
     }
 }
 
+struct RemainingBudgetView: View {
+    var budget: Decimal
+    var remaining: Decimal
+    var timeframe: TimeframeType
+    
+    var color: Color {
+        if budget == 0 || remaining == 0 {
+            return .gray
+        }
+        
+        if remaining > 0 {
+            return .green
+        }
+        
+        return .red
+    }
+    
+    var ContentView: Text {
+        if budget == 0.0 {
+            return Text("--")
+        }
+        
+        return Text(remaining, format: .currency(code: Locale.current.currency?.identifier ?? "EUR"))
+    }
+    
+    var body: some View {
+        ContentView
+            .foregroundColor(color)
+            .font(.caption)
+    }
+}
+
 
 struct StatsChartView: View {
     @Query private var items: [Item]
+    @Query private var limits: [Limit]
     @State private var selectedTaggedExpense: TaggedExpense? = nil
     @State private var showConfigureLimitsView: Bool = false
     
@@ -57,6 +90,19 @@ struct StatsChartView: View {
         return result
     }
     
+    private var remainingBudget: [String: Decimal] {
+        var dict: [String: Decimal] = [:]
+        for expense in self.expenses {
+            var limit = limits.first(where: { $0.tag == expense.tag })?.amount ?? 0
+            if timeframe == .ByWeek {
+                limit /= 4
+            }
+            
+            dict[expense.tag] = limit - expense.amount
+        }
+        return dict
+    }
+        
     
     init(timeframe: TimeframeType, date: Date) {
         
@@ -108,8 +154,16 @@ struct StatsChartView: View {
                         HStack {
                             Image(systemName: Tags.iconName(Tags(rawValue:exp.tag) ?? .Other))
                             Text(exp.tag)
+                            
                             Spacer()
+                            
+                            RemainingBudgetView(
+                                budget: limits.first { $0.tag == exp.tag }?.amount ?? 0.0,
+                                remaining: remainingBudget[exp.tag] ?? 0,
+                                timeframe: timeframe)
+                            
                             Text("\(exp.amount, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))")
+                                .frame(width: 80)
                             Image(systemName: "chevron.right")
                         }
                     }.buttonStyle(.plain)

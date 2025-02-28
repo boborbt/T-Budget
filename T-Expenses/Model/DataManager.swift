@@ -51,6 +51,7 @@ struct DataManager {
             container.mainContext.insert(Item(timestamp: Date(day: now.day      , month: now.month, year: now.year), tag: "Groceries", amount: Decimal(10.50)))
             container.mainContext.insert(Item(timestamp: Date(day: now.day +  1 , month: now.month, year: now.year), tag: "Home", amount: Decimal(10)))
             container.mainContext.insert(Item(timestamp: Date(day: now.day +  2 , month: now.month, year: now.year), tag: "Car", amount: Decimal(40)))
+            container.mainContext.insert(Item(timestamp: Date(day: now.day      , month: now.month, year: now.year), tag: "School", amount: Decimal(20)))
             container.mainContext.insert(Item(timestamp: Date(day: now.day + 7  , month: now.month, year: now.year), tag: "Extra", amount: Decimal(100)))
             container.mainContext.insert(Item(timestamp: Date(day: 27           , month: now.previousMonth.month, year: now.year), tag: "School", amount: Decimal(30)))
             container.mainContext.insert(Item(timestamp: Date(day: 27           , month: now.previousMonth.month, year: now.year), tag: "Home", amount: Decimal(50)))
@@ -59,7 +60,7 @@ struct DataManager {
             
             container.mainContext.insert(Limit(tag: "Car", amount: 100))
             container.mainContext.insert(Limit(tag: "Groceries", amount: 50))
-            container.mainContext.insert(Limit(tag: "School", amount: 200))
+            container.mainContext.insert(Limit(tag: "School", amount: 0))
 
             return container
         } catch {

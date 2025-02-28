@@ -16,16 +16,20 @@ struct ConfigureLimitsView: View {
     
     var body: some View {
         NavigationStack {
-            List {
-                ForEach(limits) { limit in
-                    NavigationLink {
-                        LimitFormView(limit: limit)
-                    } label: {
-                        HStack {
-                            Image(systemName: Tags.iconName(Tags(rawValue: limit.tag)!))
-                            Text(limit.tag)
-                            Spacer()
-                            Text(limit.amount, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
+            Form {
+                Section("Budget allocation") {
+                    List {
+                        ForEach(limits) { limit in
+                            NavigationLink {
+                                LimitFormView(limit: limit)
+                            } label: {
+                                HStack {
+                                    Image(systemName: Tags.iconName(Tags(rawValue: limit.tag)!))
+                                    Text(limit.tag)
+                                    Spacer()
+                                    Text(limit.amount, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
+                                }
+                            }
                         }
                     }
                 }
