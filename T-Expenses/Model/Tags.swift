@@ -9,6 +9,7 @@ import AppIntents
 import SwiftUI
 
 
+
 enum Tags: String, CaseIterable, Identifiable {
     case Home, Clothes, Health, Car, Groceries, School, Lunches, Travel, Extras, Other
     var id: Self { self }
@@ -35,6 +36,21 @@ enum Tags: String, CaseIterable, Identifiable {
         let iconName = Tags.iconName(tag)
         
         return Image(systemName: iconName)
+    }
+    
+    func color() -> Color {
+        switch self {
+        case .Home: return Color(hex: 0xE41A1C)   // Bright Red
+        case .Clothes: return Color(hex: 0x377EB8) // Bright Blue
+        case .Health: return Color(hex: 0x4DAF4A)  // Bright Green
+        case .Car: return Color(hex: 0x984EA3)     // Purple
+        case .Groceries: return Color(hex: 0xFF7F00) // Orange
+        case .School: return Color(hex: 0xFFFF33)  // Bright Yellow
+        case .Lunches: return Color(hex: 0xA65628) // Brown
+        case .Travel: return Color(hex: 0xF781BF)  // Pink
+        case .Extras: return Color(hex: 0x999999)  // Gray
+        case .Other: return Color(hex: 0x66C2A5)   // Teal
+        }
     }
 }
 
@@ -70,6 +86,19 @@ extension Tags: AppEnum {
                            image: .init(systemName: "cup.and.saucer")),
          .Other:     .init(title: "Other",
                            image: .init(systemName: "questionmark.circle"))
+    ]
+    
+    static let tagColors: KeyValuePairs<String,Color> = [
+        "Home":       Home.color(),
+        "Clothes":    Clothes.color(),
+        "Health":     Health.color(),
+        "Car":        Car.color(),
+        "Groceries":  Groceries.color(),
+        "School":     School.color(),
+        "Lunches":    Lunches.color(),
+        "Travel":     Travel.color(),
+        "Extras":     Extras.color(),
+        "Other":      Other.color()
     ]
     
 }

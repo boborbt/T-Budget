@@ -132,7 +132,8 @@ struct StatsChartView: View {
             Chart(expenses) { exp in
                 SectorMark( angle: .value(
                     exp.tag,
-                    exp.amount)
+                    exp.amount),
+                    angularInset: 1
                 ).foregroundStyle(
                     by: .value(
                         Text(verbatim: exp.tag),
@@ -140,7 +141,10 @@ struct StatsChartView: View {
                     )
                 )
             }
-            .chartLegend(position: .bottom, alignment: .center)
+            .chartForegroundStyleScale(
+                Tags.tagColors
+            )
+            .chartLegend(.hidden)
             .padding(.all)
             .overlay {
                 RoundedRectangle(cornerRadius:10).strokeBorder()
@@ -152,9 +156,13 @@ struct StatsChartView: View {
                         selectedTaggedExpense = exp
                     } label: {
                         HStack {
+                            Circle()
+                                .fill(Tags(rawValue:exp.tag)?.color() ?? Color.gray)
+                                .frame(width: 10, height: 10)
+                            
                             Image(systemName: Tags.iconName(Tags(rawValue:exp.tag) ?? .Other))
                             Text(exp.tag)
-                            
+ 
                             Spacer()
                             
                             RemainingBudgetView(
@@ -163,7 +171,7 @@ struct StatsChartView: View {
                                 timeframe: timeframe)
                             
                             Text("\(exp.amount, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))")
-                                .frame(width: 80)
+                                .frame(width: 70)
                             Image(systemName: "chevron.right")
                         }
                     }.buttonStyle(.plain)
