@@ -28,28 +28,28 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		A50179992D255B8600285614 /* T-Expenses.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "T-Expenses.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		A50179AD2D255B8700285614 /* T-ExpensesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "T-ExpensesTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		A50179B72D255B8700285614 /* T-ExpensesUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "T-ExpensesUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A50179992D255B8600285614 /* T-Budget.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "T-Budget.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A50179AD2D255B8700285614 /* T-BudgetTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "T-BudgetTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A50179B72D255B8700285614 /* T-BudgetUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "T-BudgetUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		A50179BF2D255B8700285614 /* Exceptions for "T-Expenses" folder in "T-Expenses" target */ = {
+		A50179BF2D255B8700285614 /* Exceptions for "T-Budget" folder in "T-Budget" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
 			);
-			target = A50179982D255B8600285614 /* T-Expenses */;
+			target = A50179982D255B8600285614 /* T-Budget */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		A501799B2D255B8600285614 /* T-Expenses */ = {
+		A501799B2D255B8600285614 /* T-Budget */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				A50179BF2D255B8700285614 /* Exceptions for "T-Expenses" folder in "T-Expenses" target */,
+				A50179BF2D255B8700285614 /* Exceptions for "T-Budget" folder in "T-Budget" target */,
 			);
-			path = "T-Expenses";
+			path = "T-Budget";
 			sourceTree = "<group>";
 		};
 		A50179B02D255B8700285614 /* T-ExpensesTests */ = {
@@ -93,7 +93,7 @@
 		A50179902D255B8600285614 = {
 			isa = PBXGroup;
 			children = (
-				A501799B2D255B8600285614 /* T-Expenses */,
+				A501799B2D255B8600285614 /* T-Budget */,
 				A50179B02D255B8700285614 /* T-ExpensesTests */,
 				A50179BA2D255B8700285614 /* T-ExpensesUITests */,
 				A5A31B7C2D259CEE005BDAF7 /* Frameworks */,
@@ -104,9 +104,9 @@
 		A501799A2D255B8600285614 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A50179992D255B8600285614 /* T-Expenses.app */,
-				A50179AD2D255B8700285614 /* T-ExpensesTests.xctest */,
-				A50179B72D255B8700285614 /* T-ExpensesUITests.xctest */,
+				A50179992D255B8600285614 /* T-Budget.app */,
+				A50179AD2D255B8700285614 /* T-BudgetTests.xctest */,
+				A50179B72D255B8700285614 /* T-BudgetUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -121,9 +121,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		A50179982D255B8600285614 /* T-Expenses */ = {
+		A50179982D255B8600285614 /* T-Budget */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A50179C02D255B8700285614 /* Build configuration list for PBXNativeTarget "T-Expenses" */;
+			buildConfigurationList = A50179C02D255B8700285614 /* Build configuration list for PBXNativeTarget "T-Budget" */;
 			buildPhases = (
 				A50179952D255B8600285614 /* Sources */,
 				A50179962D255B8600285614 /* Frameworks */,
@@ -134,19 +134,19 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				A501799B2D255B8600285614 /* T-Expenses */,
+				A501799B2D255B8600285614 /* T-Budget */,
 			);
-			name = "T-Expenses";
+			name = "T-Budget";
 			packageProductDependencies = (
 				A5A31B7D2D259CEE005BDAF7 /* CurrencyField */,
 			);
 			productName = "T-Expenses";
-			productReference = A50179992D255B8600285614 /* T-Expenses.app */;
+			productReference = A50179992D255B8600285614 /* T-Budget.app */;
 			productType = "com.apple.product-type.application";
 		};
-		A50179AC2D255B8700285614 /* T-ExpensesTests */ = {
+		A50179AC2D255B8700285614 /* T-BudgetTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A50179C52D255B8700285614 /* Build configuration list for PBXNativeTarget "T-ExpensesTests" */;
+			buildConfigurationList = A50179C52D255B8700285614 /* Build configuration list for PBXNativeTarget "T-BudgetTests" */;
 			buildPhases = (
 				A50179A92D255B8700285614 /* Sources */,
 				A50179AA2D255B8700285614 /* Frameworks */,
@@ -160,16 +160,16 @@
 			fileSystemSynchronizedGroups = (
 				A50179B02D255B8700285614 /* T-ExpensesTests */,
 			);
-			name = "T-ExpensesTests";
+			name = "T-BudgetTests";
 			packageProductDependencies = (
 			);
 			productName = "T-ExpensesTests";
-			productReference = A50179AD2D255B8700285614 /* T-ExpensesTests.xctest */;
+			productReference = A50179AD2D255B8700285614 /* T-BudgetTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		A50179B62D255B8700285614 /* T-ExpensesUITests */ = {
+		A50179B62D255B8700285614 /* T-BudgetUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A50179C82D255B8700285614 /* Build configuration list for PBXNativeTarget "T-ExpensesUITests" */;
+			buildConfigurationList = A50179C82D255B8700285614 /* Build configuration list for PBXNativeTarget "T-BudgetUITests" */;
 			buildPhases = (
 				A50179B32D255B8700285614 /* Sources */,
 				A50179B42D255B8700285614 /* Frameworks */,
@@ -183,11 +183,11 @@
 			fileSystemSynchronizedGroups = (
 				A50179BA2D255B8700285614 /* T-ExpensesUITests */,
 			);
-			name = "T-ExpensesUITests";
+			name = "T-BudgetUITests";
 			packageProductDependencies = (
 			);
 			productName = "T-ExpensesUITests";
-			productReference = A50179B72D255B8700285614 /* T-ExpensesUITests.xctest */;
+			productReference = A50179B72D255B8700285614 /* T-BudgetUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -213,7 +213,7 @@
 					};
 				};
 			};
-			buildConfigurationList = A50179942D255B8600285614 /* Build configuration list for PBXProject "T-Expenses" */;
+			buildConfigurationList = A50179942D255B8600285614 /* Build configuration list for PBXProject "T-Budget" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -230,9 +230,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				A50179982D255B8600285614 /* T-Expenses */,
-				A50179AC2D255B8700285614 /* T-ExpensesTests */,
-				A50179B62D255B8700285614 /* T-ExpensesUITests */,
+				A50179982D255B8600285614 /* T-Budget */,
+				A50179AC2D255B8700285614 /* T-BudgetTests */,
+				A50179B62D255B8700285614 /* T-BudgetUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -288,12 +288,12 @@
 /* Begin PBXTargetDependency section */
 		A50179AF2D255B8700285614 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = A50179982D255B8600285614 /* T-Expenses */;
+			target = A50179982D255B8600285614 /* T-Budget */;
 			targetProxy = A50179AE2D255B8700285614 /* PBXContainerItemProxy */;
 		};
 		A50179B92D255B8700285614 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = A50179982D255B8600285614 /* T-Expenses */;
+			target = A50179982D255B8600285614 /* T-Budget */;
 			targetProxy = A50179B82D255B8700285614 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -507,7 +507,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/T-Expenses.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/T-Expenses";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/T-Budget.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/T-Budget";
 			};
 			name = Debug;
 		};
@@ -526,7 +526,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/T-Expenses.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/T-Expenses";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/T-Budget.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/T-Budget";
 			};
 			name = Release;
 		};
@@ -567,7 +567,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		A50179942D255B8600285614 /* Build configuration list for PBXProject "T-Expenses" */ = {
+		A50179942D255B8600285614 /* Build configuration list for PBXProject "T-Budget" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A50179C32D255B8700285614 /* Debug */,
@@ -576,7 +576,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A50179C02D255B8700285614 /* Build configuration list for PBXNativeTarget "T-Expenses" */ = {
+		A50179C02D255B8700285614 /* Build configuration list for PBXNativeTarget "T-Budget" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A50179C12D255B8700285614 /* Debug */,
@@ -585,7 +585,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A50179C52D255B8700285614 /* Build configuration list for PBXNativeTarget "T-ExpensesTests" */ = {
+		A50179C52D255B8700285614 /* Build configuration list for PBXNativeTarget "T-BudgetTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A50179C62D255B8700285614 /* Debug */,
@@ -594,7 +594,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A50179C82D255B8700285614 /* Build configuration list for PBXNativeTarget "T-ExpensesUITests" */ = {
+		A50179C82D255B8700285614 /* Build configuration list for PBXNativeTarget "T-BudgetUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A50179C92D255B8700285614 /* Debug */,
