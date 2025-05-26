@@ -157,8 +157,9 @@ struct StatsChartView: View {
                     } label: {
                         HStack {
                             Circle()
+                                .stroke(.black, lineWidth: 2)
                                 .fill(Tags(rawValue:exp.tag)?.color() ?? Color.gray)
-                                .frame(width: 10, height: 10)
+                                .frame(width: 12, height: 12)
                             
                             Image(systemName: Tags.iconName(Tags(rawValue:exp.tag) ?? .Other))
                             Text(exp.tag)
