@@ -13,7 +13,7 @@ While intentionally simple, the app includes all the essential features:
 
 You can also import and export your data effortlessly using the built-in Shortcuts actions, making it simple to stay on top of your budget.
 
-The app is open source, and I welcome contributions! Feel free to propose your pull requests at: https://github.com/boborbt/T-Budget.
+The app is open source, and I welcome contributions!
 
 ## FAQ
 
