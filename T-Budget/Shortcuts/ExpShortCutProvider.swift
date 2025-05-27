@@ -25,5 +25,14 @@ struct ExpShortCutProvider: AppShortcutsProvider {
                     phrases: ["Export my expenses from \(.applicationName) between dates"],
                     shortTitle: "Export in range",
                     systemImageName: "square.and.arrow.up")
+        AppShortcut(intent: ImportExpenses(),
+                    phrases: ["Import my expenses into \(.applicationName)"],
+                    shortTitle:"Import expenses",
+                    systemImageName:"square.and.arrow.down")
+        AppShortcut(intent: DeleteExpenses(),
+                    phrases: ["Delete all expenses from \(.applicationName) between dates"],
+                    shortTitle: "Delete expenses",
+                    systemImageName:"trash")
     }
 }
+

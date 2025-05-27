@@ -10,7 +10,7 @@ import SwiftData
 
 
 @main
-struct T_ExpensesApp: App {
+struct T_Budget: App {
     var sharedModelContainer: ModelContainer = DataManager.sharedModelContainer
     
     var body: some Scene {
