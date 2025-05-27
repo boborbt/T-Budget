@@ -13,7 +13,7 @@ While intentionally simple, the app includes all the essential features:
 
 You can also import and export your data effortlessly using the built-in Shortcuts actions, making it simple to stay on top of your budget.
 
-The app is open source, and I welcome contributions! Feel free to open issues asking for new features and or reporting problems. Even better, improve the app yourself and ask for a pull request!
+The app is open source, and I welcome contributions! Feel free to open issues asking for new features and or reporting problems. Even better, improve the app yourself and make for a pull request!
 
 ## Privacy
 T-Budget only store data locally to your device.
