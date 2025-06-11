@@ -9,11 +9,6 @@ import SwiftUI
 import SwiftData
 
 
-
-
-
-
-
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     
@@ -96,17 +91,15 @@ struct ContentView: View {
                     }
                     ToolbarItemGroup(placement: .navigationBarTrailing) {
                         Picker("Visualization", selection: $timeframeType.animation()) {
-                            ForEach(TimeframeType.allCases) { type in
-                                Text(type.rawValue).tag(type)
-                            }
+                            Label(TimeframeType.ByMonth.rawValue, systemImage: "calendar").tag(TimeframeType.ByMonth)
+                            Label(TimeframeType.ByWeek.rawValue, systemImage: "calendar.circle.fill").tag(TimeframeType.ByWeek)
                         }
                         .pickerStyle(.inline)
-                        
-                        
+                    }
+                    ToolbarItemGroup(placement: .navigationBarTrailing) {
                         Button(action: addItem) {
                             Label("Add Item", systemImage: "plus")
                         }
-                        Spacer()
                     }
                 }
             } detail: {
