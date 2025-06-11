@@ -20,11 +20,10 @@ struct DeleteButton: View {
 
     
     var body: some View {
-        Button("Delete", systemImage: "trash") {
+        Button("Delete", systemImage: "trash", role: .destructive) {
             isShowingDeleteConfirmation = true
         }
-        .buttonStyle(.bordered)
-        .foregroundColor(.red)
+        .buttonStyle(.borderedProminent)
         .confirmationDialog("Are you sure?",
                             isPresented: $isShowingDeleteConfirmation,
                             actions: {
@@ -92,8 +91,7 @@ struct ItemFormView: View {
                                 
                 Button("Done", systemImage: "return") {
                     dismiss()
-                }.buttonStyle(.bordered)
-
+                }.buttonStyle(.borderedProminent)
             }
         }
 
@@ -107,11 +105,18 @@ struct ItemFormView: View {
 
 #Preview {
     @Previewable @State var item = Item(timestamp: Date(), tag: "Health", amount: 10)
-    NavigationSplitView {
-        Text("Items")
+    @State var preferredColumn = NavigationSplitViewColumn.detail
+
+    NavigationSplitView(preferredCompactColumn: $preferredColumn) {
+        Button("click") {
+        }
     }
     detail: {
-        ItemFormView(item: item)
+        if false {
+            Text("some view")
+        } else {
+            ItemFormView(item: item)
+        }
     }
 
 }

@@ -91,18 +91,15 @@ struct ContentView: View {
                     }
                     ToolbarItem(placement: .topBarTrailing) {
                         Picker("Visualization", selection: $timeframeType.animation()) {
-                            Label(TimeframeType.ByMonth.rawValue, systemImage: "calendar").tag(TimeframeType.ByMonth)
-                            Label(TimeframeType.ByWeek.rawValue, systemImage: "calendar.circle.fill").tag(TimeframeType.ByWeek)
-                        }
-                        .pickerStyle(.inline)
+                            Label("Month View", systemImage: "calendar").tag(TimeframeType.ByMonth)
+                            Label("Week View", systemImage: "calendar.circle").tag(TimeframeType.ByWeek)
+                        }.pickerStyle(.menu)
                     }
-                    
-                    ToolbarSpacer(.fixed)
-                    
+                                        
                     ToolbarItem(placement: .topBarTrailing) {
                         Button(action: addItem) {
                             Label("Add Item", systemImage: "plus")
-                        }
+                        }.buttonStyle(.borderedProminent)
                     }
                 }
             } detail: {
