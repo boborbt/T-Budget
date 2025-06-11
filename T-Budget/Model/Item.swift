@@ -12,7 +12,7 @@ import SwiftData
 //https://www.youtube.com/watch?v=LLKLa8IgK3I
 
 @Model
-final class Item: Sendable {
+final class Item {
     var timestamp: Date = Date()
     var tag: String = "Other"
     var amount: Decimal = Decimal(0.0)

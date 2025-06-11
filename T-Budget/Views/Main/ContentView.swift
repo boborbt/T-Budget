@@ -80,7 +80,7 @@ struct ContentView: View {
                     StatsChartView(timeframe: timeframeType, date: monthYear)
                 })
                 .toolbar {
-                    ToolbarItemGroup(placement: .navigationBarLeading) {
+                    ToolbarItem(placement: .topBarLeading) {
                         TimeFrameSelector(
                             date: monthYear,
                             timeframeType: timeframeType,
@@ -89,14 +89,17 @@ struct ContentView: View {
                             tapAction: setTodayTimeframe
                         )
                     }
-                    ToolbarItemGroup(placement: .navigationBarTrailing) {
+                    ToolbarItem(placement: .topBarTrailing) {
                         Picker("Visualization", selection: $timeframeType.animation()) {
                             Label(TimeframeType.ByMonth.rawValue, systemImage: "calendar").tag(TimeframeType.ByMonth)
                             Label(TimeframeType.ByWeek.rawValue, systemImage: "calendar.circle.fill").tag(TimeframeType.ByWeek)
                         }
                         .pickerStyle(.inline)
                     }
-                    ToolbarItemGroup(placement: .navigationBarTrailing) {
+                    
+                    ToolbarSpacer(.fixed)
+                    
+                    ToolbarItem(placement: .topBarTrailing) {
                         Button(action: addItem) {
                             Label("Add Item", systemImage: "plus")
                         }
