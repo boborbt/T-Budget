@@ -9,11 +9,6 @@ import SwiftUI
 import SwiftData
 
 
-
-
-
-
-
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     
@@ -85,7 +80,7 @@ struct ContentView: View {
                     StatsChartView(timeframe: timeframeType, date: monthYear)
                 })
                 .toolbar {
-                    ToolbarItemGroup(placement: .navigationBarLeading) {
+                    ToolbarItem(placement: .topBarLeading) {
                         TimeFrameSelector(
                             date: monthYear,
                             timeframeType: timeframeType,
@@ -94,19 +89,17 @@ struct ContentView: View {
                             tapAction: setTodayTimeframe
                         )
                     }
-                    ToolbarItemGroup(placement: .navigationBarTrailing) {
+                    ToolbarItem(placement: .topBarTrailing) {
                         Picker("Visualization", selection: $timeframeType.animation()) {
-                            ForEach(TimeframeType.allCases) { type in
-                                Text(type.rawValue).tag(type)
-                            }
-                        }
-                        .pickerStyle(.inline)
-                        
-                        
+                            Label("Month View", systemImage: "calendar").tag(TimeframeType.ByMonth)
+                            Label("Week View", systemImage: "calendar.circle").tag(TimeframeType.ByWeek)
+                        }.pickerStyle(.menu)
+                    }
+                                        
+                    ToolbarItem(placement: .topBarTrailing) {
                         Button(action: addItem) {
                             Label("Add Item", systemImage: "plus")
-                        }
-                        Spacer()
+                        }.buttonStyle(.borderedProminent)
                     }
                 }
             } detail: {

@@ -20,10 +20,10 @@ struct DeleteButton: View {
 
     
     var body: some View {
-        Button("Delete", role: .destructive) {
+        Button("Delete", systemImage: "trash", role: .destructive) {
             isShowingDeleteConfirmation = true
         }
-        .buttonStyle(.bordered)
+        .buttonStyle(.borderedProminent)
         .confirmationDialog("Are you sure?",
                             isPresented: $isShowingDeleteConfirmation,
                             actions: {
@@ -82,19 +82,16 @@ struct ItemFormView: View {
                 }
             }
         }
-//        .navigationBarBackButtonHidden(true)
         .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
+            ToolbarItemGroup(placement: .topBarTrailing) {
                 DeleteButton() {
                     modelContext.delete(item)
                     dismiss()
                 }
-            }
-            
-            ToolbarItem(placement: .topBarTrailing) {
-                Button("Done") {
+                                
+                Button("Done", systemImage: "return") {
                     dismiss()
-                }.buttonStyle(.bordered)
+                }.buttonStyle(.borderedProminent)
             }
         }
 
@@ -104,4 +101,22 @@ struct ItemFormView: View {
 #Preview {
     @Previewable @State var item = Item(timestamp: Date(), tag: "Car", amount: 10)
     ItemFormView(item: item)
+}
+
+#Preview {
+    @Previewable @State var item = Item(timestamp: Date(), tag: "Health", amount: 10)
+    @State var preferredColumn = NavigationSplitViewColumn.detail
+
+    NavigationSplitView(preferredCompactColumn: $preferredColumn) {
+        Button("click") {
+        }
+    }
+    detail: {
+        if false {
+            Text("some view")
+        } else {
+            ItemFormView(item: item)
+        }
+    }
+
 }

@@ -19,6 +19,7 @@ struct StatsAndListView: View {
                 Button(action: { showExpensesDetails = true } ) {
                     StatsView(timeframe: timeframeType, date: date)
                 }
+                .buttonStyle(.borderedProminent)
                 ItemListView(timeframe: timeframeType, date: date, selectedItem: $selectedItem)
             }
         }
