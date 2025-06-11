@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-final class Limit: Sendable {
+final class Limit {
     var tag: String = "Other"
     var amount: Decimal = Decimal(0.0)
     
