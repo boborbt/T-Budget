@@ -13,7 +13,7 @@
 //
 
 import AppIntents
-import SwiftUICore
+import SwiftUI
 import SwiftData
 import OSLog
 

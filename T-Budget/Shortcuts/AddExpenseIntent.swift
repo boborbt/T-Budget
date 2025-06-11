@@ -5,7 +5,6 @@
 //  Created by Roberto Esposito on 03/01/25.
 //
 import AppIntents
-import SwiftUICore
 import SwiftData
 
 
