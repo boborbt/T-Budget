@@ -9,7 +9,7 @@ import AppIntents
 import SwiftUI
 import SwiftData
 
-
+// Deprecated: Use ExportExpensesInRange instead
 struct ExportExpenses: AppIntent {
     static let title: LocalizedStringResource = LocalizedStringResource("Export")
     static let description: LocalizedStringResource = LocalizedStringResource("Export all expenses to a CSV representation")
