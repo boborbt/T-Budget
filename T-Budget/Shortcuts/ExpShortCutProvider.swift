@@ -16,11 +16,6 @@ struct ExpShortCutProvider: AppShortcutsProvider {
                     shortTitle: "Add Expense",
                     systemImageName: "eurosign.bank.building"
         )
-//        AppShortcut(intent: ExportExpenses(),
-//                    phrases: ["Export my expenses from \(.applicationName)"],
-//                    shortTitle: "Export",
-//                    systemImageName: "square.and.arrow.up"
-//        )
         AppShortcut(intent: ExportExpensesInRange(),
                     phrases: ["Export my expenses from \(.applicationName) between dates"],
                     shortTitle: "Export in range",
@@ -33,9 +28,6 @@ struct ExpShortCutProvider: AppShortcutsProvider {
                     phrases: ["Delete all expenses from \(.applicationName) between dates"],
                     shortTitle: "Delete expenses",
                     systemImageName:"trash")
-        AppShortcut(intent: CleanupLimits(),
-                    phrases: ["Deduplicate expense limits from \(.applicationName)", "Clean-up expense limits from \(.applicationName)"],
-                    systemImageName:"exclamationmark.magnifyingglass")
     }
 }
 

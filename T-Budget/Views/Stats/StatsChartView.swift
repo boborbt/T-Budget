@@ -8,6 +8,7 @@
 import SwiftUI
 import SwiftData
 import Charts
+import OSLog
 
 struct TaggedExpense: Identifiable {
     var id: String {
@@ -184,6 +185,14 @@ struct StatsChartView: View {
             }
             Button {
                 showConfigureLimitsView = true
+                do {
+                    let cleanupResult = try Limit.cleanup()
+                    if cleanupResult.count > 0 {
+                        os_log("Failed to cleanup %d limits", cleanupResult.count)
+                    }
+                } catch {
+                    os_log("Error cleaning up limits")
+                }
             } label: {
                 Image(systemName: "gear")
             }
