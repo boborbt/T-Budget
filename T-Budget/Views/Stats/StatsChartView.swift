@@ -74,9 +74,14 @@ struct StatsChartView: View {
     private let startDate: Date
     private let endDate: Date
     private let timeframe: TimeframeType
+    private var filteredItems: [Item] {
+        items.filter { item in
+            item.timestamp >= startDate && item.timestamp < endDate
+        }
+    }
     private var expenses: [TaggedExpense] {
         var dict: [String:TaggedExpense] = [:]
-        for item in self.items {
+        for item in filteredItems {
             var te = dict[item.tag, default:TaggedExpense(tag: item.tag)]
             te.amount += item.amount
             te.items.append(item)
@@ -118,14 +123,7 @@ struct StatsChartView: View {
             endDate = date.lastDayOfWeek!
         }
         
-        let predicate = #Predicate<Item> { item in
-            if item.timestamp >= startDate && item.timestamp < endDate {
-                return true
-            } else {
-                return false
-            }
-        }
-        self._items = Query(filter: predicate)
+        self._items = Query()
     }
     
     var body: some View {

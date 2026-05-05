@@ -15,6 +15,12 @@ struct StatsSummary: View {
     let endDate: Date
     let timeframe: TimeframeType
     
+    private var filteredItems: [Item] {
+        items.filter { item in
+            item.timestamp >= startDate && item.timestamp < endDate
+        }
+    }
+    
     init(timeframe: TimeframeType, date: Date) {
         self.timeframe = timeframe
         
@@ -27,21 +33,14 @@ struct StatsSummary: View {
             endDate = date.lastDayOfWeek!
         }
         
-        let predicate = #Predicate<Item> { item in
-            if item.timestamp >= startDate && item.timestamp < endDate {
-                return true
-            } else {
-                return false
-            }
-        }
-        self._items = Query(filter: predicate)
+        self._items = Query()
     }
     
     var body: some View {
         VStack {
             HStack {
-                Label("\(items.count) items", systemImage: "bolt.fill")
-                Label("\(items.reduce(Decimal(0.0)) { $0 + $1.amount }, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))", systemImage: "eurosign.bank.building")
+                Label("\(filteredItems.count) items", systemImage: "bolt.fill")
+                Label("\(filteredItems.reduce(Decimal(0.0)) { $0 + $1.amount }, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))", systemImage: "eurosign.bank.building")
             }
         }
     }

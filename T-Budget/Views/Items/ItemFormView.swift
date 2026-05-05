@@ -105,7 +105,7 @@ struct ItemFormView: View {
 
 #Preview {
     @Previewable @State var item = Item(timestamp: Date(), tag: "Health", amount: 10)
-    @State var preferredColumn = NavigationSplitViewColumn.detail
+    @Previewable @State var preferredColumn = NavigationSplitViewColumn.detail
 
     NavigationSplitView(preferredCompactColumn: $preferredColumn) {
         Button("click") {

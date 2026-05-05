@@ -15,6 +15,12 @@ struct ItemListView: View {
     let endDate: Date
     let timeframe: TimeframeType
     
+    private var filteredItems: [Item] {
+        items.filter { item in
+            item.timestamp >= startDate && item.timestamp < endDate
+        }
+    }
+    
     init(timeframe: TimeframeType, date: Date, selectedItem: Binding<Item?>) {
         self._selectedItem = selectedItem
         self.timeframe = timeframe
@@ -28,32 +34,23 @@ struct ItemListView: View {
             endDate = date.lastDayOfWeek!
         }
         
-        let predicate = #Predicate<Item> { item in
-            if item.timestamp >= startDate && item.timestamp < endDate {
-                return true
-            } else {
-                return false
-            }
-        }
-
-        
-        self._items = Query(filter: predicate, sort: \Item.timestamp, order: .reverse)
+        self._items = Query(sort: \Item.timestamp, order: .reverse)
     }
     
     var body: some View {
         VStack {
             List(selection: $selectedItem) {
                 Section {
-                    ForEach(items) { item in
+                    ForEach(filteredItems) { item in
                         NavigationLink {
                             ItemFormView(item: item)
                         } label: {
                             ItemView(item: item)
                         }
                     }
-                    .onChange(of: items) {
+                    .onChange(of: filteredItems) {
                         if let itemId = ActionManager.editItem {
-                            self.selectedItem = self.items.first(where: { item in
+                            self.selectedItem = self.filteredItems.first(where: { item in
                                 item.persistentModelID == itemId
                             })
                         }

@@ -93,7 +93,7 @@ struct ContentView: View {
                         Picker("Visualization", selection: $timeframeType.animation()) {
                             Label("Month View", systemImage: "calendar").tag(TimeframeType.ByMonth)
                             Label("Week View", systemImage: "calendar.circle").tag(TimeframeType.ByWeek)
-                        }.pickerStyle(.menu)
+                        }.pickerStyle(.inline)
                     }
                                         
                     ToolbarItem(placement: .topBarTrailing) {
